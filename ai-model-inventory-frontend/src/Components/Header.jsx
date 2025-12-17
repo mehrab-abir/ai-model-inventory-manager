@@ -37,9 +37,9 @@ const Header = () => {
         </div>
 
         <nav className="hidden md:flex items-center gap-6 ">
-          <NavLink to="/">Home</NavLink>
-          <NavLink to="/">All Models</NavLink>
-          <NavLink to="/">Add a Model</NavLink>
+          <NavLink to="/" className='hover:text-primary hover:tracking-wider transition-all duration-300'>Home</NavLink>
+          <NavLink to="/allmodels" className='hover:text-primary hover:tracking-wider transition-all duration-300'>All Models</NavLink>
+          <NavLink to="/addmodel" className='hover:text-primary hover:tracking-wider transition-all duration-300'>Add a Model</NavLink>
         </nav>
 
         <div className="user-action flex items-center space-x-2">
@@ -74,8 +74,8 @@ const Header = () => {
         />
         <nav className="flex flex-col items-center mt-20 space-y-2.5">
           <NavLink to="/">Home</NavLink>
-          <NavLink to="/">All Models</NavLink>
-          <NavLink to="/">Add a Model</NavLink>
+          <NavLink to="/allmodels">All Models</NavLink>
+          <NavLink to="/addmodel">Add a Model</NavLink>
         </nav>
       </div>
     </header>

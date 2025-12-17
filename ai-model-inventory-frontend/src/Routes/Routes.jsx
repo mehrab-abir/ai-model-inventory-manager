@@ -1,6 +1,7 @@
 import { createBrowserRouter } from "react-router";
 import Home from "../Pages/Home/Home";
 import Root from "../Root";
+import AllModels from "../Pages/AllModels";
 
 const router = createBrowserRouter([
     {
@@ -12,7 +13,8 @@ const router = createBrowserRouter([
                 Component : Home
             },
             {
-                
+               path: '/allmodels',
+               Component : AllModels 
             }
         ]
     }

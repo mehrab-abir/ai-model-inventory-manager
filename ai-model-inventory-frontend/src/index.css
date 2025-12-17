@@ -1,3 +1,6 @@
+/* google font - Inter */
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+
 @import "tailwindcss";
 @plugin "daisyui";
 
@@ -7,11 +10,15 @@
 @import "swiper/css/pagination";
 @import "swiper/css/autoplay";
 
+body {
+  font-family: "Inter", sans-serif;
+}
+
 
 /* Light mode */
 [data-theme="light"] {
   /* ---------- Backgrounds ---------- */
-  .bg-base { background-color: #FAFBFC; }        /* Soft off-white */
+  .bg-base { background-color: #efefef; }        /* Soft off-white */
   .bg-surface { background-color: #FFFFFF; }     /* Pure white */
   .bg-primary { background-color: #4338CA; }     /* Deep Indigo (softer, pro) */
   .bg-primary-hover { background-color: #4F46E5; } /* Indigo (hover) */
@@ -92,6 +99,18 @@
   /* ---------- Focus & Rings ---------- */
   .ring-primary { box-shadow: 0 0 0 3px #6366F133; } /* Indigo (20% opacity) */
   .outline-primary { outline: 2px solid #6366F1; outline-offset: 2px; } /* Indigo focus */
+}
+
+
+
+[data-theme="light"] .active {
+  color: #4338CA;
+  border-bottom: 2px solid #4338CA;
+}
+
+[data-theme="dark"] .active {
+  color: #6366F1;
+  border-bottom: 2px solid #6366F1;
 }
 
 
