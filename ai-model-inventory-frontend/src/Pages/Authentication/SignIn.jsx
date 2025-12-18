@@ -1,17 +1,25 @@
-import React, { use, useState } from "react";
+import React, { use, useRef, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router";
 import { FcGoogle } from "react-icons/fc";
 import { FaEye } from "react-icons/fa";
 import { FaEyeSlash } from "react-icons/fa6";
 import { AuthContext } from "./AuthContext";
 import { Bounce, toast, ToastContainer } from "react-toastify";
+import LoaderSpinner from "../../Components/LoaderSpinner";
 
 const SignIn = () => {
-  const { signin,googleSignIn,setUser, setLoading } = use(AuthContext);
+  const { signin, googleSignIn, setUser,loading, setLoading, forgotPassword } =
+    use(AuthContext);
   const navigate = useNavigate();
   const location = useLocation();
 
   const [showPassword, setShowPassword] = useState(false);
+  const [signinError, setSigninError] = useState('');
+  const [resetPasswordMessage, setResetPasswordMessage] = useState("");
+  const [resetPasswordError, setResetPasswordError] = useState("");
+
+  const modalRef = useRef();
+  const emailRef = useRef();
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
@@ -20,14 +28,22 @@ const SignIn = () => {
     const email = form.email.value;
     const password = form.password.value;
 
+    setSigninError('');
     signin(email,password)
     .then(()=>{
         toast.success("Welcome Back!");
-        setLoading(false);
         navigate(location.state || '/');
     })
-    .catch((signInError)=>{
-        toast.error(`${signInError.code}`)
+    .catch((error)=>{
+        if (error.code === "auth/invalid-credential"){
+            setSigninError("Invalid Credential");
+        }
+        else{
+            setSigninError(error.code);
+        } 
+    })
+    .finally(()=>{
+        setLoading(false);
     })
   };
 
@@ -37,7 +53,6 @@ const SignIn = () => {
     .then((result)=>{
         const user = result.user;
         setUser(user);
-        setLoading(false);
         
         const newUser = {
             displayName : user.displayName,
@@ -84,7 +99,39 @@ const SignIn = () => {
           transition: Bounce,
         });
     })
+    .finally(()=>{
+        setLoading(false);
+    })
   }
+
+  //forgot password modal
+  const openModal = ()=>{
+    modalRef.current.show();
+  }
+
+  const resetPassword = ()=>{
+    setResetPasswordError('')
+    setResetPasswordMessage("");
+
+    const email = emailRef.current.value;
+    forgotPassword(email)
+    .then(()=>{
+        setResetPasswordMessage(
+          "If an account exists with this email, password reset link has been sent. Please check your email, including spam"
+        );
+    })
+    .catch((err)=>{
+        setResetPasswordError(err.code);
+    })
+    .finally(()=>{
+        setLoading(false);
+    })
+  }
+
+  if(loading){
+    return <LoaderSpinner></LoaderSpinner>
+  }
+
   return (
     <div className="pt-36 bg-surface pb-10">
       <div className="w-11/12 md:w-3/5 lg:w-1/3 mx-auto mt-10 bg-base p-5 rounded-md flex flex-col justify-center shadow-lg shadow-indigo-500">
@@ -132,9 +179,13 @@ const SignIn = () => {
               />
             )}
           </div>
-          <p className="text-secondary hover:underline cursor-pointer text-sm hover:text-primary!">
+          <p
+            onClick={() => openModal()}
+            className="text-secondary hover:underline cursor-pointer text-sm hover:text-primary!"
+          >
             Forgot password?
           </p>
+          <p className="text-red-500 text-sm mt-2">{signinError}</p>
           <button
             type="submit"
             className="btn bg-primary w-full text-white rounded-md border-none mt-4 hover:shadow-md hover:shadow-indigo-300"
@@ -151,6 +202,44 @@ const SignIn = () => {
             Sign in with Google
           </button>
         </form>
+        <dialog
+          ref={modalRef}
+          className="bg-surface modal modal-bottom sm:modal-middle"
+        >
+          <div className="modal-box">
+            <h3 className="font-bold text-lg">
+              Enter the email associated with your account
+            </h3>
+            <input
+              ref={emailRef}
+              type="email"
+              className="input border-input outline-none w-full"
+              required
+            />
+            <p className="text-info text-sm mt-2">{resetPasswordMessage}</p>
+            <p className="text-red-500 text-sm">{resetPasswordError}</p>
+            <button
+              type="button"
+              onClick={() => resetPassword()}
+              className="btn bg-primary text-white mt-4"
+            >
+              Next
+            </button>
+            <div className="modal-action">
+              <form method="dialog">
+                <button
+                  className="btn"
+                  onClick={() => {
+                    setResetPasswordError("");
+                    setResetPasswordMessage("");
+                  }}
+                >
+                  Cancel
+                </button>
+              </form>
+            </div>
+          </div>
+        </dialog>
       </div>
       <ToastContainer
         position="top-right"

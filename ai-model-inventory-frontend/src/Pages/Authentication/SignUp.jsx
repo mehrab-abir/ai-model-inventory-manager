@@ -4,142 +4,162 @@ import { FcGoogle } from "react-icons/fc";
 import { FaEye } from "react-icons/fa";
 import { FaEyeSlash } from "react-icons/fa6";
 import { AuthContext } from "./AuthContext";
-import { Bounce, ToastContainer, toast } from 'react-toastify';
+import { Bounce, ToastContainer, toast } from "react-toastify";
+import LoaderSpinner from "../../Components/LoaderSpinner";
 
 const SignUp = () => {
-    const { setUser, setLoading, googleSignIn, createAccount, updateUser } = use(AuthContext);
+  const {
+    setUser,
+    loading,
+    setLoading,
+    googleSignIn,
+    createAccount,
+    updateUser,
+  } = use(AuthContext);
 
-    const navigate = useNavigate();
-    const location = useLocation();
+  const navigate = useNavigate();
+  const location = useLocation();
 
-    const [showPassword, setShowPassword] = useState(false);
-    const [passwordFormatError, setPasswordFormatError] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
+  const [passwordFormatError, setPasswordFormatError] = useState("");
 
-    const handleFormSubmit = (e) =>{
-        e.preventDefault();
+  const handleFormSubmit = (e) => {
+    e.preventDefault();
 
-        const form = e.target;
-        const displayName = form.name.value;
-        const email = form.email.value;
-        const photoURL = form.photoURL.value;
-        const password = form.password.value;
+    const form = e.target;
+    const displayName = form.name.value;
+    const email = form.email.value;
+    const photoURL = form.photoURL.value;
+    const password = form.password.value;
 
-        const regex = /^(?=.*[A-Z])(?=.*[a-z]).{6,}$/;
-        if(!regex.test(password)){
-            setPasswordFormatError(
-              "Password must be at least 6 characters long and include at least one uppercase letter and one lowercase letter."
-            );
-            return;
-        }
-
-        createAccount(email,password)
-        .then((result)=>{
-            updateUser({displayName,photoURL}).
-            then(()=>{
-                const user = result.user;
-                setUser({...user,displayName,photoURL});
-
-                const newUser = {
-                    displayName,email, photoURL,password
-                }
-
-                fetch(`http://localhost:3000/users`,{
-                    method : 'POST',
-                    headers : {
-                        'content-type' : 'application/json'
-                    },
-                    body : JSON.stringify(newUser)
-                })
-                .then((res)=>res.json())
-                .then((afterPost)=>{
-                    if(afterPost.insertedId){
-                        toast.success("Welcome!", {
-                          position: "top-right",
-                          autoClose: 5000,
-                          hideProgressBar: false,
-                          closeOnClick: false,
-                          pauseOnHover: true,
-                          draggable: true,
-                          progress: undefined,
-                          theme: "light",
-                          transition: Bounce,
-                        });
-                        setLoading(false);
-                        navigate(location.state || "/");
-                    }
-                })
-            })
-        })
-        .catch((signupError)=>{
-            toast.error(`${signupError.code}`, {
-              position: "top-right",
-              autoClose: 5000,
-              hideProgressBar: false,
-              closeOnClick: false,
-              pauseOnHover: true,
-              draggable: true,
-              progress: undefined,
-              theme: "light",
-              transition: Bounce,
-            });
-        })
-        form.reset();
+    setPasswordFormatError("");
+    const regex = /^(?=.*[A-Z])(?=.*[a-z]).{6,}$/;
+    if (!regex.test(password)) {
+      setPasswordFormatError(
+        "Password must be at least 6 characters long and include at least one uppercase letter and one lowercase letter."
+      );
+      return;
     }
 
-    //sign in with google
-      const signInWithGoogle = ()=>{
-        googleSignIn()
-        .then((result)=>{
-            const user = result.user;
-            setUser(user);
-            setLoading(false);
-            
-            const newUser = {
-                displayName : user.displayName,
-                email : user.email,
-                photoURL : user.photoURL
-            }
-    
-            navigate(location.state || '/');
-    
-            fetch("http://localhost:3000/users",{
-                method : 'POST',
-                headers : {
-                    'content-type' : 'application/json'
-                },
-                body : JSON.stringify(newUser)
-            })
-            .then((res)=>res.json())
-            .then((afterPost)=>{
-                if(afterPost.insertedId){
-                    toast.success("Welcome!", {
-                      position: "top-right",
-                      autoClose: 5000,
-                      hideProgressBar: false,
-                      closeOnClick: false,
-                      pauseOnHover: true,
-                      draggable: true,
-                      progress: undefined,
-                      theme: "light",
-                      transition: Bounce,
-                    });
-                }
-            })
-        })
-        .catch((error)=>{
-            toast.error(`${error.code}`, {
-              position: "top-right",
-              autoClose: 5000,
-              hideProgressBar: false,
-              closeOnClick: false,
-              pauseOnHover: true,
-              draggable: true,
-              progress: undefined,
-              theme: "light",
-              transition: Bounce,
+    createAccount(email, password)
+      .then((result) => {
+        updateUser({ displayName, photoURL }).then(() => {
+          const user = result.user;
+          setUser({ ...user, displayName, photoURL });
+
+          const newUser = {
+            displayName,
+            email,
+            photoURL,
+            password,
+          };
+
+          fetch(`http://localhost:3000/users`, {
+            method: "POST",
+            headers: {
+              "content-type": "application/json",
+            },
+            body: JSON.stringify(newUser),
+          })
+            .then((res) => res.json())
+            .then((afterPost) => {
+              if (afterPost.insertedId) {
+                toast.success("Welcome!", {
+                  position: "top-right",
+                  autoClose: 5000,
+                  hideProgressBar: false,
+                  closeOnClick: false,
+                  pauseOnHover: true,
+                  draggable: true,
+                  progress: undefined,
+                  theme: "light",
+                  transition: Bounce,
+                });
+                navigate(location.state || "/");
+              }
             });
+        });
+      })
+      .catch((signupError) => {
+        toast.error(`${signupError.code}`, {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: false,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+          transition: Bounce,
+        });
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+    form.reset();
+  };
+
+  //sign in with google
+  const signInWithGoogle = () => {
+    googleSignIn()
+      .then((result) => {
+        const user = result.user;
+        setUser(user);
+
+        const newUser = {
+          displayName: user.displayName,
+          email: user.email,
+          photoURL: user.photoURL,
+        };
+
+        navigate(location.state || "/");
+
+        fetch("http://localhost:3000/users", {
+          method: "POST",
+          headers: {
+            "content-type": "application/json",
+          },
+          body: JSON.stringify(newUser),
         })
-      }
+          .then((res) => res.json())
+          .then((afterPost) => {
+            if (afterPost.insertedId) {
+              toast.success("Welcome!", {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: false,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+                transition: Bounce,
+              });
+            }
+          });
+      })
+      .catch((error) => {
+        toast.error(`${error.code}`, {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: false,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+          transition: Bounce,
+        });
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  };
+
+  if (loading) {
+    return <LoaderSpinner></LoaderSpinner>;
+  }
+
   return (
     <div className="pt-36 bg-surface pb-10">
       <div className="w-11/12 md:w-3/5 lg:w-1/3 mx-auto mt-10 bg-base p-5 shadow-lg shadow-indigo-500 rounded-md flex flex-col justify-center">
