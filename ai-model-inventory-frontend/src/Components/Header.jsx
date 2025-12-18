@@ -7,9 +7,10 @@ import { MdDarkMode } from "react-icons/md";
 import { FaRegTimesCircle } from "react-icons/fa";
 import { AuthContext } from "../Pages/Authentication/AuthContext";
 import { toast, ToastContainer } from "react-toastify";
+import LoaderSpinner from "./LoaderSpinner";
 
 const Header = () => {
-  const { user, signOutUser, setLoading } = use(AuthContext);
+  const { user, signOutUser, setLoading, loading } = use(AuthContext);
   const navigate = useNavigate();
 
   const [theme, setTheme] = useState(
@@ -36,6 +37,10 @@ const Header = () => {
 
   // const userPicture =
   //   user?.photoURL || user?.providerData[0]?.photoURL || userAvatar;
+
+  if(loading){
+    return <LoaderSpinner></LoaderSpinner>
+  }
 
   return (
     <header className="bg-surface fixed w-full z-50 shadow-xl">
