@@ -53,6 +53,7 @@ const SignIn = () => {
     .then((result)=>{
         const user = result.user;
         setUser(user);
+        setLoading(false);
         
         const newUser = {
             displayName : user.displayName,

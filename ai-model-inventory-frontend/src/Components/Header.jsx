@@ -5,6 +5,8 @@ import { Link, NavLink, useNavigate } from "react-router";
 import { CiLight } from "react-icons/ci";
 import { MdDarkMode } from "react-icons/md";
 import { FaRegTimesCircle } from "react-icons/fa";
+import { AiOutlineUserAdd } from "react-icons/ai";
+import { CiLogin } from "react-icons/ci";
 import { AuthContext } from "../Pages/Authentication/AuthContext";
 import { toast, ToastContainer } from "react-toastify";
 import LoaderSpinner from "./LoaderSpinner";
@@ -44,7 +46,7 @@ const Header = () => {
 
   return (
     <header className="bg-surface fixed w-full z-50 shadow-xl">
-      <div className="w-10/12 mx-auto flex items-center justify-between">
+      <div className="w-11/12 md:10/12 mx-auto flex items-center justify-between">
         <div className="logo flex gap-1 items-center">
           <div
             onClick={() => setOpenMenu(!openMenu)}
@@ -56,7 +58,7 @@ const Header = () => {
           </div>
           <Link to="/" className="flex items-center">
             <img src={logo} alt="" className="w-20" />
-            <h1 className="text-xl font-bold">AI Models</h1>
+            <h1 className="text-xl font-bold hidden md:flex">AI Models</h1>
           </Link>
         </div>
 
@@ -85,28 +87,55 @@ const Header = () => {
           {theme === "light" ? (
             <MdDarkMode
               onClick={() => setTheme("dark")}
-              className="text-2xl md:text-4xl cursor-pointer"
+              className="text-3xl md:text-4xl cursor-pointer mr-4"
             />
           ) : (
             <CiLight
               onClick={() => setTheme("light")}
-              className="text-2xl md:text-4xl cursor-pointer"
+              className="text-3xl md:text-4xl cursor-pointer mr-4"
             />
           )}
 
           {user ? (
-            <button onClick={()=>handleSignOut()} className="btn p-1 text-sm md:p-2 bg-surface border-danger cursor-pointer">
+            <button
+              onClick={() => handleSignOut()}
+              className="btn p-1 text-sm md:p-2 bg-surface border-danger cursor-pointer"
+            >
               Sign Out
             </button>
           ) : (
-            <div className="flex items-center space-x-2">
+            <div className="flex items-center space-x-4">
+              {/* md to large device */}
               <Link
                 to="/auth/signin"
-                className="btn bg-surface border border-primary"
+                className="btn bg-surface border border-primary hidden md:flex"
               >
                 Login
               </Link>
-              <Link to="/auth/signup" className="btn bg-primary text-white">
+              
+              {/* only in small device */}
+              <Link
+                to="/auth/signin"
+                className="flex flex-col md:hidden items-center text-center"
+              >
+                <CiLogin className="text-2xl text-primary" />
+                <span className="text-primary">Login</span>
+              </Link>
+
+              {/* only in small device */}
+              <Link
+                to="/auth/signup"
+                className="flex flex-col md:hidden items-center text-center"
+              >
+                <AiOutlineUserAdd className="text-2xl text-primary" />
+                <span className="text-primary">Register</span>
+              </Link>
+
+              {/* md to large device */}
+              <Link
+                to="/auth/signup"
+                className="btn bg-primary text-white hidden md:flex"
+              >
                 Register
               </Link>
             </div>
