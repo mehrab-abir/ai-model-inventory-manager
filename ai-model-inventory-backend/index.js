@@ -31,10 +31,17 @@ async function run() {
         const db = client.db("ai-model-inventory-db");
         const userCollection = db.collection("users");
 
-        app.post('/users',async (req,res)=>{
+        app.post('/users', async (req, res) => {
             const newUser = req.body;
-            const afterPost = await userCollection.insertOne(newUser);
-            res.send(afterPost);
+            const userExist = await userCollection.findOne({ email: req.body.email });
+
+            if (userExist) {
+                res.send({ message: "User already exists. Not posted." });
+            }
+            else {
+                const afterPost = await userCollection.insertOne(newUser);
+                res.send(afterPost);
+            }
         })
 
         await client.db("admin").command({ ping: 1 });
@@ -45,6 +52,6 @@ async function run() {
 }
 run().catch(console.dir);
 
-app.listen(port, ()=>{
+app.listen(port, () => {
     console.log(`Server is running on port:${port}`);
 })

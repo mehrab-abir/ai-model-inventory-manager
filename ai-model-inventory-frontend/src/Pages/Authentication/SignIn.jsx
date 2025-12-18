@@ -1,14 +1,15 @@
 import React, { use, useState } from "react";
-import { Link, useNavigate } from "react-router";
+import { Link, useLocation, useNavigate } from "react-router";
 import { FcGoogle } from "react-icons/fc";
 import { FaEye } from "react-icons/fa";
 import { FaEyeSlash } from "react-icons/fa6";
 import { AuthContext } from "./AuthContext";
-import { toast, ToastContainer } from "react-toastify";
+import { Bounce, toast, ToastContainer } from "react-toastify";
 
 const SignIn = () => {
-  const { signin, setLoading } = use(AuthContext);
+  const { signin,googleSignIn,setUser, setLoading } = use(AuthContext);
   const navigate = useNavigate();
+  const location = useLocation();
 
   const [showPassword, setShowPassword] = useState(false);
 
@@ -29,6 +30,61 @@ const SignIn = () => {
         toast.error(`${signInError.code}`)
     })
   };
+
+  //sign in with google
+  const signInWithGoogle = ()=>{
+    googleSignIn()
+    .then((result)=>{
+        const user = result.user;
+        setUser(user);
+        setLoading(false);
+        
+        const newUser = {
+            displayName : user.displayName,
+            email : user.email,
+            photoURL : user.photoURL
+        }
+
+        navigate(location.state || '/');
+
+        fetch("http://localhost:3000/users",{
+            method : 'POST',
+            headers : {
+                'content-type' : 'application/json'
+            },
+            body : JSON.stringify(newUser)
+        })
+        .then((res)=>res.json())
+        .then((afterPost)=>{
+            if(afterPost.insertedId){
+                toast.success("Welcome!", {
+                  position: "top-right",
+                  autoClose: 5000,
+                  hideProgressBar: false,
+                  closeOnClick: false,
+                  pauseOnHover: true,
+                  draggable: true,
+                  progress: undefined,
+                  theme: "light",
+                  transition: Bounce,
+                });
+            }
+        })
+    })
+    .catch((error)=>{
+        toast.error(`${error.code}`, {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: false,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+          transition: Bounce,
+        });
+    })
+  }
   return (
     <div className="pt-36 bg-surface pb-10">
       <div className="w-11/12 md:w-3/5 lg:w-1/3 mx-auto mt-10 bg-base p-5 rounded-md flex flex-col justify-center shadow-lg shadow-indigo-500">
@@ -87,6 +143,7 @@ const SignIn = () => {
           </button>
           <p className="text-center my-4">Or</p>
           <button
+            onClick={() => signInWithGoogle()}
             type="button"
             className="btn bg-white w-full text-black rounded-md border-none hover:shadow-md hover:shadow-indigo-300"
           >
@@ -95,7 +152,19 @@ const SignIn = () => {
           </button>
         </form>
       </div>
-      <ToastContainer />
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick={false}
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+        transition={Bounce}
+      />
     </div>
   );
 };

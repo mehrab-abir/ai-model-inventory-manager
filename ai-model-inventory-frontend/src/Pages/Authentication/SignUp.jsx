@@ -7,7 +7,7 @@ import { AuthContext } from "./AuthContext";
 import { Bounce, ToastContainer, toast } from 'react-toastify';
 
 const SignUp = () => {
-    const { setUser, setLoading, createAccount, updateUser } = use(AuthContext);
+    const { setUser, setLoading, googleSignIn, createAccount, updateUser } = use(AuthContext);
 
     const navigate = useNavigate();
     const location = useLocation();
@@ -85,6 +85,61 @@ const SignUp = () => {
         })
         form.reset();
     }
+
+    //sign in with google
+      const signInWithGoogle = ()=>{
+        googleSignIn()
+        .then((result)=>{
+            const user = result.user;
+            setUser(user);
+            setLoading(false);
+            
+            const newUser = {
+                displayName : user.displayName,
+                email : user.email,
+                photoURL : user.photoURL
+            }
+    
+            navigate(location.state || '/');
+    
+            fetch("http://localhost:3000/users",{
+                method : 'POST',
+                headers : {
+                    'content-type' : 'application/json'
+                },
+                body : JSON.stringify(newUser)
+            })
+            .then((res)=>res.json())
+            .then((afterPost)=>{
+                if(afterPost.insertedId){
+                    toast.success("Welcome!", {
+                      position: "top-right",
+                      autoClose: 5000,
+                      hideProgressBar: false,
+                      closeOnClick: false,
+                      pauseOnHover: true,
+                      draggable: true,
+                      progress: undefined,
+                      theme: "light",
+                      transition: Bounce,
+                    });
+                }
+            })
+        })
+        .catch((error)=>{
+            toast.error(`${error.code}`, {
+              position: "top-right",
+              autoClose: 5000,
+              hideProgressBar: false,
+              closeOnClick: false,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: "light",
+              transition: Bounce,
+            });
+        })
+      }
   return (
     <div className="pt-36 bg-surface pb-10">
       <div className="w-11/12 md:w-3/5 lg:w-1/3 mx-auto mt-10 bg-base p-5 shadow-lg shadow-indigo-500 rounded-md flex flex-col justify-center">
@@ -162,6 +217,7 @@ const SignUp = () => {
           </button>
           <p className="text-center my-4">Or</p>
           <button
+            onClick={() => signInWithGoogle()}
             type="button"
             className="btn bg-white w-full text-black rounded-md border-none hover:shadow-md hover:shadow-indigo-300"
           >
