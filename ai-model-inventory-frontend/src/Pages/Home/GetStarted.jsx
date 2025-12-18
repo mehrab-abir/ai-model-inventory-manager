@@ -11,10 +11,10 @@ const GetStarted = () => {
             ecosystem.
           </p>
           <div className="flex items-center gap-8 mt-5">
-            <button className="btn bg-primary text-white rounded-xl border-none shadow-md shadow-white">
+            <button className="btn bg-primary text-white rounded-xl border-none shadow-md hover:shadow-white">
               Create Account
             </button>
-            <button className="btn bg-surface text-accent border border-white rounded-xl border-none shadow-md">
+            <button className="btn bg-surface text-accent rounded-xl border-none hover:shadow-xl">
               Explore Models
             </button>
           </div>

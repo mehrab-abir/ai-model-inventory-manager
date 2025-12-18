@@ -20,9 +20,9 @@ body {
   /* ---------- Backgrounds ---------- */
   .bg-base { background-color: #efefef; }        /* Soft off-white */
   .bg-surface { background-color: #FFFFFF; }     /* Pure white */
-  .bg-primary { background-color: #4338CA; }     /* Deep Indigo (softer, pro) */
-  .bg-primary-hover { background-color: #4F46E5; } /* Indigo (hover) */
-  .bg-secondary { background-color: #F2F3F8; }   /* Very light indigo-gray */
+  .bg-primary { background-color: #3d32b7; }     /* Deep Indigo (softer, pro) */
+  .bg-hover { background-color: #292578; } /* Indigo (hover) */
+  .bg-secondary { background-color: #F2F3F8;}   /* Very light indigo-gray */
   .bg-muted { background-color: #F3F4F6; }       /* Light gray */
   .bg-accent { background-color: #E0E7FF; }      /* Light indigo tint */
 
@@ -46,7 +46,7 @@ body {
 
   /* ---------- Borders ---------- */
   .border-base { border-color: #0000001F; }      /* Black (12% opacity) - clearer */
-  .border-primary { border-color: #4338CA; }     /* Deep Indigo */
+  .border-primary { border-color: #3d32b7; }     /* Deep Indigo */
   .border-info { border-color: #0EA5E9; }        /* Sky blue */
   .border-danger { border-color: #EF4444; }      /* Red */
 
@@ -64,7 +64,7 @@ body {
   /* ---------- Backgrounds ---------- */
   .bg-base { background-color: #0F172A; }         /* Deep navy */
   .bg-surface { background-color: #1E293B; }      /* Slate */
-  .bg-primary { background-color: #6366F1; }      /* Bright indigo */
+  .bg-primary { background-color: #5254d0; }      /* Bright indigo */
   .bg-primary-hover { background-color: #818CF8; } /* Lighter indigo (hover) */
   .bg-secondary { background-color: #334155; }    /* Medium slate */
   .bg-muted { background-color: #1E293B; }        /* Slate */

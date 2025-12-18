@@ -8,7 +8,7 @@ import { BsLinkedin } from "react-icons/bs";
 
 const Footer = () => {
     return (
-      <footer className="bg-surface pt-15 pb-6 text-secondary">
+      <footer className="bg-base pt-15 pb-6 text-secondary">
         <div className="w-10/12 mx-auto flex flex-col md:flex-row justify-between mb-10">
           <div className="flex-2">
             <div className="flex items-center">

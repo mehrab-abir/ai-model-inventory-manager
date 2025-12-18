@@ -19,7 +19,7 @@ const Header = () => {
   }, [theme]);
 
   return (
-    <header className="bg-surface fixed w-full z-50">
+    <header className="bg-surface fixed w-full z-50 shadow-xl">
       <div className="w-10/12 mx-auto flex items-center justify-between">
         <div className="logo flex gap-1 items-center">
           <div
@@ -55,10 +55,10 @@ const Header = () => {
             />
           )}
 
-          <button className="btn bg-surface border border-primary">
+          <Link to='/auth/signin' className="btn bg-surface border border-primary">
             Login
-          </button>
-          <button className="btn bg-primary text-white">Register</button>
+          </Link>
+          <Link to='/auth/signup' className="btn bg-primary text-white">Register</Link>
         </div>
       </div>
 
