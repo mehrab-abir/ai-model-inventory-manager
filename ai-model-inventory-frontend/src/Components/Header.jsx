@@ -1,11 +1,14 @@
-import React, { useEffect, useState } from "react";
+import React, { use, useEffect, useState } from "react";
 import logo from "./../assets/logo-transparent.png";
 import { Link, NavLink } from "react-router";
 import { CiLight } from "react-icons/ci";
 import { MdDarkMode } from "react-icons/md";
 import { FaRegTimesCircle } from "react-icons/fa";
+import { AuthContext } from "../Pages/Authentication/AuthContext";
 
 const Header = () => {
+  const { user } = use(AuthContext);
+
   const [theme, setTheme] = useState(
     () => localStorage.getItem("theme") || "light"
   );
@@ -30,16 +33,31 @@ const Header = () => {
             <span className="h-1 bg-gray-400 rounded-md w-5"></span>
             <span className="h-1 bg-gray-400 rounded-md w-7"></span>
           </div>
-          <Link to='/' className="flex items-center">
+          <Link to="/" className="flex items-center">
             <img src={logo} alt="" className="w-20" />
             <h1 className="text-xl font-bold">AI Models</h1>
           </Link>
         </div>
 
         <nav className="hidden md:flex items-center gap-6 ">
-          <NavLink to="/" className='hover:text-primary hover:tracking-wider transition-all duration-300'>Home</NavLink>
-          <NavLink to="/allmodels" className='hover:text-primary hover:tracking-wider transition-all duration-300'>All Models</NavLink>
-          <NavLink to="/addmodel" className='hover:text-primary hover:tracking-wider transition-all duration-300'>Add a Model</NavLink>
+          <NavLink
+            to="/"
+            className="hover:text-primary hover:tracking-wider transition-all duration-300"
+          >
+            Home
+          </NavLink>
+          <NavLink
+            to="/allmodels"
+            className="hover:text-primary hover:tracking-wider transition-all duration-300"
+          >
+            All Models
+          </NavLink>
+          <NavLink
+            to="/addmodel"
+            className="hover:text-primary hover:tracking-wider transition-all duration-300"
+          >
+            Add a Model
+          </NavLink>
         </nav>
 
         <div className="user-action flex items-center space-x-2">
@@ -55,10 +73,23 @@ const Header = () => {
             />
           )}
 
-          <Link to='/auth/signin' className="btn bg-surface border border-primary">
-            Login
-          </Link>
-          <Link to='/auth/signup' className="btn bg-primary text-white">Register</Link>
+          {user ? (
+            <button className="btn p-1 text-sm md:p-2 bg-surface border-danger cursor-pointer">
+              Sign Out
+            </button>
+          ) : (
+            <div className="flex items-center space-x-2">
+              <Link
+                to="/auth/signin"
+                className="btn bg-surface border border-primary"
+              >
+                Login
+              </Link>
+              <Link to="/auth/signup" className="btn bg-primary text-white">
+                Register
+              </Link>
+            </div>
+          )}
         </div>
       </div>
 
