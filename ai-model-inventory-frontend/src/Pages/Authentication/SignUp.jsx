@@ -32,8 +32,6 @@ const SignUp = () => {
             return;
         }
 
-        // console.log("Sign up info",{displayName, email,photoURL,password});
-
         createAccount(email,password)
         .then((result)=>{
             updateUser({displayName,photoURL}).

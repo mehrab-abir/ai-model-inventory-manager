@@ -1,10 +1,15 @@
-import React, { useState } from "react";
-import { Link } from "react-router";
+import React, { use, useState } from "react";
+import { Link, useNavigate } from "react-router";
 import { FcGoogle } from "react-icons/fc";
 import { FaEye } from "react-icons/fa";
 import { FaEyeSlash } from "react-icons/fa6";
+import { AuthContext } from "./AuthContext";
+import { toast, ToastContainer } from "react-toastify";
 
 const SignIn = () => {
+  const { signin, setLoading } = use(AuthContext);
+  const navigate = useNavigate();
+
   const [showPassword, setShowPassword] = useState(false);
 
   const handleFormSubmit = (e) => {
@@ -14,7 +19,15 @@ const SignIn = () => {
     const email = form.email.value;
     const password = form.password.value;
 
-    console.log("Sign in info", { email, password });
+    signin(email,password)
+    .then(()=>{
+        toast.success("Welcome Back!");
+        setLoading(false);
+        navigate(location.state || '/');
+    })
+    .catch((signInError)=>{
+        toast.error(`${signInError.code}`)
+    })
   };
   return (
     <div className="pt-36 bg-surface pb-10">
@@ -82,6 +95,7 @@ const SignIn = () => {
           </button>
         </form>
       </div>
+      <ToastContainer />
     </div>
   );
 };

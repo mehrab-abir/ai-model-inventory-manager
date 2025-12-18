@@ -32,7 +32,7 @@ const AuthProvider = ({children}) => {
 
     const signOutUser = ()=>{
         setLoading(true);
-        return signOut();
+        return signOut(auth);
     }
 
     useEffect(()=>{

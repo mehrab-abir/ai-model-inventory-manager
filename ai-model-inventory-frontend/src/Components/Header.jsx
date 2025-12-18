@@ -1,13 +1,16 @@
 import React, { use, useEffect, useState } from "react";
 import logo from "./../assets/logo-transparent.png";
-import { Link, NavLink } from "react-router";
+// import userAvatar from "./../assets/userAvatar.png";
+import { Link, NavLink, useNavigate } from "react-router";
 import { CiLight } from "react-icons/ci";
 import { MdDarkMode } from "react-icons/md";
 import { FaRegTimesCircle } from "react-icons/fa";
 import { AuthContext } from "../Pages/Authentication/AuthContext";
+import { toast, ToastContainer } from "react-toastify";
 
 const Header = () => {
-  const { user } = use(AuthContext);
+  const { user, signOutUser, setLoading } = use(AuthContext);
+  const navigate = useNavigate();
 
   const [theme, setTheme] = useState(
     () => localStorage.getItem("theme") || "light"
@@ -20,6 +23,19 @@ const Header = () => {
     html.setAttribute("data-theme", theme);
     localStorage.setItem("theme", theme);
   }, [theme]);
+
+  //sign out user
+  const handleSignOut = ()=>{
+    signOutUser()
+    .then(()=>{
+      toast.info("Signed Out");
+      setLoading(false);
+      navigate('/');
+    })
+  }
+
+  // const userPicture =
+  //   user?.photoURL || user?.providerData[0]?.photoURL || userAvatar;
 
   return (
     <header className="bg-surface fixed w-full z-50 shadow-xl">
@@ -74,7 +90,7 @@ const Header = () => {
           )}
 
           {user ? (
-            <button className="btn p-1 text-sm md:p-2 bg-surface border-danger cursor-pointer">
+            <button onClick={()=>handleSignOut()} className="btn p-1 text-sm md:p-2 bg-surface border-danger cursor-pointer">
               Sign Out
             </button>
           ) : (
@@ -109,6 +125,7 @@ const Header = () => {
           <NavLink to="/addmodel">Add a Model</NavLink>
         </nav>
       </div>
+      <ToastContainer />
     </header>
   );
 };
