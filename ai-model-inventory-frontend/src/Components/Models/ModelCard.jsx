@@ -1,8 +1,9 @@
 import React from 'react';
+import { Link } from 'react-router';
 // import sampleImg from './../../assets/sample-img.png'
 
 const ModelCard = ({model}) => {
-  const {name, framework, image, useCase} = model;
+  const {_id,name, framework, image, description, useCase} = model;
     return (
       <div className="overflow-hidden relative shadow-sm shadow-[#4338CA20] hover:scale-102 hover:shadow-2xl transition-all duration-300 rounded-lg">
         <img
@@ -18,15 +19,23 @@ const ModelCard = ({model}) => {
             </span>
           </h2>
 
+          <p className="text-muted text-sm min-h-16 leading-snug">{`${description.slice(
+            0,
+            100
+          )}...`}</p>
+
           <div className="flex items-center justify-between mt-2">
-            <span className="">4.3</span>
-            <span className="bg-secondary p-1 rounded-full text-sm">
+            <span className="text-sm">4.3</span>
+            <span className="bg-secondary p-1 rounded-full text-sm!">
               {useCase}
             </span>
           </div>
-          <button className="btn bg-primary w-full text-white rounded-xl mt-4">
+          <Link
+            to={`/allmodels/${_id}`}
+            className="btn bg-primary w-full text-white rounded-xl mt-4"
+          >
             View Details
-          </button>
+          </Link>
         </div>
       </div>
     );

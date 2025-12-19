@@ -42,7 +42,7 @@ const Header = () => {
   return (
     <header className="bg-surface fixed w-full z-50 shadow-xl">
       <div className="w-11/12 md:10/12 mx-auto flex items-center justify-between">
-        <div className="logo flex gap-1 items-center">
+        <div className="logo flex gap-1 items-center py-6 md:py-0">
           <div
             onClick={() => setOpenMenu(!openMenu)}
             className="flex flex-col md:hidden space-y-1 cursor-pointer"
@@ -52,8 +52,8 @@ const Header = () => {
             <span className="h-1 bg-gray-400 rounded-md w-7"></span>
           </div>
           <Link to="/" className="flex items-center">
-            <img src={logo} alt="" className="w-20" />
-            <h1 className="text-xl font-bold hidden md:flex">AI Models</h1>
+            <img src={logo} alt="" className="w-20 hidden md:flex" />
+            <h1 className="text-xl font-bold ml-2">AI Models</h1>
           </Link>
         </div>
 
@@ -107,7 +107,7 @@ const Header = () => {
               >
                 Login
               </Link>
-              
+
               {/* only in small device */}
               <Link
                 to="/auth/signin"
@@ -149,9 +149,15 @@ const Header = () => {
           className="text-4xl absolute top-10 right-10 cursor-pointer text-gray-400"
         />
         <nav className="flex flex-col items-center mt-20 space-y-2.5">
-          <NavLink to="/" onClick={()=>setOpenMenu(!openMenu)}>Home</NavLink>
-          <NavLink to="/allmodels" onClick={()=>setOpenMenu(!openMenu)}>All Models</NavLink>
-          <NavLink to="/addmodel" onClick={()=>setOpenMenu(!openMenu)}>Add a Model</NavLink>
+          <NavLink to="/" onClick={() => setOpenMenu(!openMenu)}>
+            Home
+          </NavLink>
+          <NavLink to="/allmodels" onClick={() => setOpenMenu(!openMenu)}>
+            All Models
+          </NavLink>
+          <NavLink to="/addmodel" onClick={() => setOpenMenu(!openMenu)}>
+            Add a Model
+          </NavLink>
         </nav>
       </div>
       <ToastContainer />

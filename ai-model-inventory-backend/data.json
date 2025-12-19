@@ -1,5 +1,6 @@
 [
   {
+    "_id": "694500229406e45a00168ba6",
     "name": "BERT",
     "framework": "TensorFlow",
     "useCase": "NLP",
@@ -11,6 +12,7 @@
     "purchased": 0
   },
   {
+    "_id": "694500229406e45a00168ba7",
     "name": "GPT-2",
     "framework": "PyTorch",
     "useCase": "NLP",
@@ -22,6 +24,7 @@
     "purchased": 0
   },
   {
+    "_id": "694500229406e45a00168ba8",
     "name": "ResNet-50",
     "framework": "TensorFlow",
     "useCase": "Computer Vision",
@@ -33,6 +36,7 @@
     "purchased": 0
   },
   {
+    "_id": "694500229406e45a00168ba9",
     "name": "Stable Diffusion",
     "framework": "Diffusers",
     "useCase": "Image Generation",
@@ -44,6 +48,7 @@
     "purchased": 0
   },
   {
+    "_id": "694500229406e45a00168baa",
     "name": "VGG-16",
     "framework": "TensorFlow",
     "useCase": "Computer Vision",
@@ -55,6 +60,7 @@
     "purchased": 0
   },
   {
+    "_id": "694500229406e45a00168bab",
     "name": "EfficientNet",
     "framework": "TensorFlow",
     "useCase": "Computer Vision",
@@ -66,6 +72,7 @@
     "purchased": 0
   },
   {
+    "_id": "694500229406e45a00168bac",
     "name": "AlexNet",
     "framework": "PyTorch",
     "useCase": "Computer Vision",
@@ -77,6 +84,7 @@
     "purchased": 0
   },
   {
+    "_id": "694500229406e45a00168bad",
     "name": "Transformer",
     "framework": "TensorFlow",
     "useCase": "NLP",
@@ -88,6 +96,7 @@
     "purchased": 0
   },
   {
+    "_id": "694500229406e45a00168bae",
     "name": "Random Forest Classifier",
     "framework": "Scikit-learn",
     "useCase": "Machine Learning",
@@ -99,6 +108,7 @@
     "purchased": 0
   },
   {
+    "_id": "694500229406e45a00168baf",
     "name": "Graph Convolutional Network",
     "framework": "DGL",
     "useCase": "Graph Learning",
@@ -110,6 +120,7 @@
     "purchased": 0
   },
   {
+    "_id": "694500229406e45a00168bb0",
     "name": "MobileNet",
     "framework": "TensorFlow",
     "useCase": "Computer Vision",
@@ -121,6 +132,7 @@
     "purchased": 0
   },
   {
+    "_id": "694500229406e45a00168bb1",
     "name": "DeepSpeech",
     "framework": "TensorFlow",
     "useCase": "Speech Recognition",
@@ -132,6 +144,7 @@
     "purchased": 0
   },
   {
+    "_id": "694500229406e45a00168bb2",
     "name": "WaveNet",
     "framework": "TensorFlow",
     "useCase": "Audio Processing",
@@ -143,6 +156,7 @@
     "purchased": 0
   },
   {
+    "_id": "694500229406e45a00168bb3",
     "name": "Latent Dirichlet Allocation",
     "framework": "Gensim",
     "useCase": "NLP",
@@ -154,6 +168,7 @@
     "purchased": 0
   },
   {
+    "_id": "694500229406e45a00168bb4",
     "name": "StyleGAN",
     "framework": "PyTorch",
     "useCase": "Image Generation",
@@ -165,6 +180,7 @@
     "purchased": 0
   },
   {
+    "_id": "694500229406e45a00168bb5",
     "name": "CLIP",
     "framework": "PyTorch",
     "useCase": "Vision-Language",

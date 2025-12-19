@@ -2,7 +2,7 @@ const express = require('express');
 const app = express();
 require('dotenv').config()
 const cors = require('cors');
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 const port = process.env.PORT || 3000;
 
 app.use(express.json());
@@ -26,7 +26,7 @@ const client = new MongoClient(uri, {
 async function run() {
     try {
         // Connect the client to the server	(optional starting in v4.7)
-        await client.connect();
+        // await client.connect();
 
         const db = client.db("ai-model-inventory-db");
         const userCollection = db.collection("users");
@@ -44,6 +44,13 @@ async function run() {
             res.send(latest);
         })
 
+        //details of a specific model
+        app.get('/allmodels/:id',async (req,res)=>{
+            const id = req.params.id;
+            const modelDetails = await aiModelCollection.findOne({_id : new ObjectId(id)});
+            res.send(modelDetails);
+        })
+
         app.post('/users', async (req, res) => {
             const newUser = req.body;
             const userExist = await userCollection.findOne({ email: req.body.email });
@@ -57,8 +64,8 @@ async function run() {
             }
         })
 
-        await client.db("admin").command({ ping: 1 });
-        console.log("Pinged your deployment. You successfully connected to MongoDB!");
+        // await client.db("admin").command({ ping: 1 });
+        // console.log("Pinged your deployment. You successfully connected to MongoDB!");
     } finally {
 
     }

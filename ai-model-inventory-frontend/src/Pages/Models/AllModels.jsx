@@ -1,5 +1,5 @@
 import React from 'react';
-import ModelCard from '../Components/Models/ModelCard';
+import ModelCard from '../../Components/Models/ModelCard';
 import { useLoaderData } from 'react-router';
 
 const AllModels = () => {
