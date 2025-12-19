@@ -30,6 +30,19 @@ async function run() {
 
         const db = client.db("ai-model-inventory-db");
         const userCollection = db.collection("users");
+        const aiModelCollection = db.collection("ai-models");
+
+        //get all models
+        app.get('/allmodels',async (req,res)=>{
+            const allmodels = await aiModelCollection.find().toArray();
+            res.send(allmodels);
+        })
+
+        //get latest 6 models
+        app.get('/latest',async (req,res)=>{
+            const latest = await aiModelCollection.find().sort({created_at:-1}).limit(6).toArray();
+            res.send(latest);
+        })
 
         app.post('/users', async (req, res) => {
             const newUser = req.body;

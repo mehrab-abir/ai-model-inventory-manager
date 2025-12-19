@@ -203,9 +203,11 @@ const SignIn = () => {
             Sign in with Google
           </button>
         </form>
+
+        {/* reset password modal */}
         <dialog
           ref={modalRef}
-          className="bg-surface modal modal-bottom sm:modal-middle"
+          className="bg-surface modal modal-middle"
         >
           <div className="modal-box">
             <h3 className="font-bold text-lg">

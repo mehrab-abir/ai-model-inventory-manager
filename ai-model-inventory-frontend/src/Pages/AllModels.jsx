@@ -1,7 +1,10 @@
 import React from 'react';
 import ModelCard from '../Components/Models/ModelCard';
+import { useLoaderData } from 'react-router';
 
 const AllModels = () => {
+  const allmodels = useLoaderData();
+  // console.log(allmodels);
     return (
       <div className="bg-base pt-28">
         <div className="w-10/12 mx-auto py-10">
@@ -15,8 +18,8 @@ const AllModels = () => {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {[1, 1, 1, 1, 1, 1].map((model, index) => {
-              return <ModelCard id={index} model={model}></ModelCard>;
+            {allmodels.map((model) => {
+              return <ModelCard key={model._id} model={model}></ModelCard>;
             })}
           </div>
         </div>

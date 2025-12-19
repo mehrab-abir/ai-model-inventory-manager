@@ -9,10 +9,9 @@ import { AiOutlineUserAdd } from "react-icons/ai";
 import { CiLogin } from "react-icons/ci";
 import { AuthContext } from "../Pages/Authentication/AuthContext";
 import { toast, ToastContainer } from "react-toastify";
-import LoaderSpinner from "./LoaderSpinner";
 
 const Header = () => {
-  const { user, signOutUser, setLoading, loading } = use(AuthContext);
+  const { user, signOutUser, setLoading } = use(AuthContext);
   const navigate = useNavigate();
 
   const [theme, setTheme] = useState(
@@ -39,10 +38,6 @@ const Header = () => {
 
   // const userPicture =
   //   user?.photoURL || user?.providerData[0]?.photoURL || userAvatar;
-
-  if(loading){
-    return <LoaderSpinner></LoaderSpinner>
-  }
 
   return (
     <header className="bg-surface fixed w-full z-50 shadow-xl">
@@ -154,9 +149,9 @@ const Header = () => {
           className="text-4xl absolute top-10 right-10 cursor-pointer text-gray-400"
         />
         <nav className="flex flex-col items-center mt-20 space-y-2.5">
-          <NavLink to="/">Home</NavLink>
-          <NavLink to="/allmodels">All Models</NavLink>
-          <NavLink to="/addmodel">Add a Model</NavLink>
+          <NavLink to="/" onClick={()=>setOpenMenu(!openMenu)}>Home</NavLink>
+          <NavLink to="/allmodels" onClick={()=>setOpenMenu(!openMenu)}>All Models</NavLink>
+          <NavLink to="/addmodel" onClick={()=>setOpenMenu(!openMenu)}>Add a Model</NavLink>
         </nav>
       </div>
       <ToastContainer />

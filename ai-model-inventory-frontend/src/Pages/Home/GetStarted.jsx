@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router';
 //background: linear-gradient(to top, #000428, #004e92);
 const GetStarted = () => {
     return (
@@ -10,13 +11,13 @@ const GetStarted = () => {
             Register now to access all features and contribute to the AI
             ecosystem.
           </p>
-          <div className="flex items-center gap-8 mt-5">
-            <button className="btn bg-primary text-white rounded-xl border-none shadow-md hover:shadow-white">
+          <div className="flex items-center gap-4 md:gap-8 mt-5">
+            <Link to='/auth/signup' className="btn p-1 md:p-2 bg-primary text-white rounded-xl border-none shadow-md hover:shadow-white">
               Create Account
-            </button>
-            <button className="btn bg-surface text-accent rounded-xl border-none hover:shadow-xl">
+            </Link>
+            <Link to='/allmodels' className="btn p-1 md:p-2 bg-surface text-accent rounded-xl border-none hover:shadow-xl">
               Explore Models
-            </button>
+            </Link>
           </div>
         </div>
       </div>

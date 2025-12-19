@@ -6,44 +6,47 @@ import Auth from "../Pages/Authentication/Auth";
 import SignIn from "../Pages/Authentication/SignIn";
 import SignUp from "../Pages/Authentication/SignUp";
 import ErrorPage from "../Components/ErrorPage";
+import LoaderSpinner from "../Components/LoaderSpinner";
 
 const router = createBrowserRouter([
-    {
-        path: '/',
-        Component : Root,
-        children : [
-            {
-                index : true,
-                Component : Home
-            },
-            {
-               path: '/allmodels',
-               Component : AllModels 
-            }
-        ]
-    },
-    {
-        path : '/auth',
-        Component : Auth,
-        children : [
-            {
-                index: true,
-                Component : SignIn
-            },
-            {
-                path : '/auth/signin',
-                Component : SignIn
-            },
-            {
-                path: '/auth/signup',
-                Component : SignUp
-            }
-        ]
-    },
-    {
-        path : '*',
-        Component : ErrorPage
-    }
-])
+  {
+    path: "/",
+    Component: Root,
+    children: [
+      {
+        index: true,
+        Component: Home,
+      },
+      {
+        path: "/allmodels",
+        Component: AllModels,
+        loader: () => fetch("http://localhost:3000/allmodels"),
+        hydrateFallbackElement : LoaderSpinner
+      },
+    ],
+  },
+  {
+    path: "/auth",
+    Component: Auth,
+    children: [
+      {
+        index: true,
+        Component: SignIn,
+      },
+      {
+        path: "/auth/signin",
+        Component: SignIn,
+      },
+      {
+        path: "/auth/signup",
+        Component: SignUp,
+      },
+    ],
+  },
+  {
+    path: "*",
+    Component: ErrorPage,
+  },
+]);
 
 export default router;

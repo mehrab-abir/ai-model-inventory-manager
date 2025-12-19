@@ -1,7 +1,18 @@
 import React from 'react';
 import ModelCard from '../../Components/Models/ModelCard';
+import { useEffect } from 'react';
+import { useState } from 'react';
 
 const FeaturedModels = () => {
+
+  const [latestModels, setLatestModels] = useState([]);
+
+  useEffect(()=>{
+    fetch("http://localhost:3000/latest")
+    .then((res)=>res.json())
+    .then((data)=>setLatestModels(data));
+  },[])
+
     return (
       <div className="bg-surface pt-8">
         <div className="w-10/12 mx-auto py-10">
@@ -16,8 +27,8 @@ const FeaturedModels = () => {
 
           <div className='grid grid-cols-1 md:grid-cols-3 gap-8'>
             {
-                [1,1,1,1,1,1].map((model,index)=>{
-                    return <ModelCard id={index} model={model}></ModelCard>
+                latestModels.map((model)=>{
+                    return <ModelCard key={model._id} model={model}></ModelCard>
                 })
             }
           </div>

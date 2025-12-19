@@ -24,7 +24,7 @@ body {
   .bg-hover { background-color: #292578; } /* Indigo (hover) */
   .bg-secondary { background-color: #F2F3F8;}   /* Very light indigo-gray */
   .bg-muted { background-color: #F3F4F6; }       /* Light gray */
-  .bg-accent { background-color: #E0E7FF; }      /* Light indigo tint */
+  .bg-accent { background-color: #e0e8ff; }      /* Light indigo tint */
 
   .bg-info { background-color: #0EA5E9; }        /* Sky blue (info/highlight) */
   .bg-danger { background-color: #EF4444; }      /* Red */
