@@ -24,29 +24,31 @@ const router = createBrowserRouter([
       {
         path: "/allmodels",
         Component: AllModels,
-        loader: () =>
-          fetch("http://localhost:3000/allmodels"),
-        hydrateFallbackElement: LoaderSpinner,
+        loader: () => fetch("http://localhost:3000/allmodels"),
+        hydrateFallbackElement: <LoaderSpinner></LoaderSpinner>,
       },
       {
         path: "allmodels/:id",
         Component: ModelDetails,
         loader: ({ params }) =>
           fetch(`http://localhost:3000/allmodels/${params.id}`),
-        hydrateFallbackElement : LoaderSpinner
+        hydrateFallbackElement: <LoaderSpinner></LoaderSpinner>,
       },
       {
-        path : "addmodel",
-        Component : AddModel
+        path: "addmodel",
+        Component: AddModel,
       },
       {
-        path : '/update-this-model',
-        Component : UpdateModel
+        path: "/update-this-model/:id",
+        Component: UpdateModel,
+        loader: ({ params }) =>
+          fetch(`http://localhost:3000/update-this-model/${params.id}`),
+        hydrateFallbackElement: <LoaderSpinner></LoaderSpinner>,
       },
       {
-        path : '/mymodels',
-        Component : MyModels
-      }
+        path: "/mymodels",
+        Component: MyModels,
+      },
     ],
   },
   {

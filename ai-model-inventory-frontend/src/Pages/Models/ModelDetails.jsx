@@ -16,6 +16,7 @@ const ModelDetails = () => {
 
   const model = useLoaderData();
   const {
+    _id,
     name,
     framework,
     useCase,
@@ -42,7 +43,7 @@ const ModelDetails = () => {
             />
             {user?.email === createdBy ? (
               <div className="flex gap-4 mt-2">
-                <Link to={`/update-this-model`} className="btn bg-surface border-info text-accent cursor-pointer text-sm">
+                <Link to={`/update-this-model/${_id}`} className="btn bg-surface border-info text-accent cursor-pointer text-sm">
                   Edit <MdOutlineEdit className="text-xl" />
                 </Link>
                 <button className="btn bg-surface border-danger text-accent cursor-pointer text-sm hover:bg-red-500! hover:text-white!">

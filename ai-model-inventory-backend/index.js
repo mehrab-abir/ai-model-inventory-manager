@@ -59,9 +59,9 @@ async function run() {
         })
 
         //get the model that is to be updated 
-        app.get('/update-this-model', async (req, res) => {
-            const email = req.query.email;
-            const thisModel = await aiModelCollection.findOne({ createdBy: email });
+        app.get('/update-this-model/:id', async (req, res) => {
+            const id = req.params.id;
+            const thisModel = await aiModelCollection.findOne({ _id: new ObjectId(id) });
             res.send(thisModel);
         })
 
@@ -75,6 +75,13 @@ async function run() {
                 }
             );
             res.send(afterUpdate);
+        })
+
+        //get my model
+        app.get('/mymodels',async (req,res)=>{
+            const email = req.query.email;
+            const mymodels = await aiModelCollection.find({createdBy : email}).toArray();
+            res.send(mymodels);
         })
 
 

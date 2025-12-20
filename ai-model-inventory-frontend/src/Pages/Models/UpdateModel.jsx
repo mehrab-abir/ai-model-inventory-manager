@@ -1,34 +1,13 @@
 import React from "react";
-import { use } from "react";
-import { AuthContext } from "../Authentication/AuthContext";
-import { useState } from "react";
 import Swal from "sweetalert2";
 import { MdOutlineEdit } from "react-icons/md";
 import LoaderSpinner from "../../Components/LoaderSpinner";
-import { useEffect } from "react";
-import { useNavigate } from "react-router";
+import { useLoaderData, useNavigate } from "react-router";
 
 const UpdateModel = () => {
-  const { user, loading, setLoading } = use(AuthContext);
   const navigate = useNavigate();
 
-  const [thisModel, setThisModel] = useState(null);
-
-  useEffect(() => {
-    fetch(`http://localhost:3000/update-this-model?email=${user?.email}`)
-      .then((res) => res.json())
-      .then((model) => setThisModel(model))
-      .catch((error) => {
-        console.log(error);
-      })
-      .finally(() => {
-        setLoading(false);
-      });
-  }, [setLoading, user?.email]);
-
-  if (loading) {
-    return <LoaderSpinner></LoaderSpinner>;
-  }
+  const model = useLoaderData();
 
   const handleUpdateModel = (e) => {
     e.preventDefault();
@@ -51,7 +30,7 @@ const UpdateModel = () => {
       image
     };
 
-    fetch(`http://localhost:3000/update-model/${thisModel._id}`, {
+    fetch(`http://localhost:3000/update-model/${model._id}`, {
         method : "PATCH",
         headers : {
             'content-type' : 'application/json'
@@ -67,7 +46,7 @@ const UpdateModel = () => {
             theme: "auto",
           });
           console.log(afterUpdate);
-        navigate(`/allmodels/${thisModel._id}`);
+        navigate(`/allmodels/${model._id}`);
         }
       });
       form.reset();
@@ -91,7 +70,7 @@ const UpdateModel = () => {
               type="text"
               name="name"
               className="input border-input focus:outline-primary w-full"
-              defaultValue={thisModel?.name}
+              defaultValue={model?.name}
               required
             />
           </div>
@@ -101,7 +80,7 @@ const UpdateModel = () => {
               <label className="fotn-semibold">Framework</label>
               <select
                 name="framework"
-                defaultValue={thisModel?.framework}
+                defaultValue={model?.framework}
                 className="select border-input focus:outline-primary!  cursor-pointer w-full"
                 required
               >
@@ -135,7 +114,7 @@ const UpdateModel = () => {
               <label className="fotn-semibold">Use Case</label>
               <select
                 name="usecase"
-                defaultValue={thisModel?.useCase}
+                defaultValue={model?.useCase}
                 className="select border-input focus:outline-primary!  cursor-pointer w-full"
                 required
               >
@@ -164,7 +143,7 @@ const UpdateModel = () => {
               type="text"
               name="dataset"
               className="input border-input focus:outline-primary w-full"
-              defaultValue={thisModel?.dataset}
+              defaultValue={model?.dataset}
               required
             />
           </div>
@@ -175,7 +154,7 @@ const UpdateModel = () => {
               type="text"
               name="description"
               className="bg-surface w-full focus:outline-primary! p-2 border border-input rounded resize-y whitespace-pre-wrap wrap-break-word"
-              defaultValue={thisModel?.description}
+              defaultValue={model?.description}
               required
             />
           </div>
@@ -186,7 +165,7 @@ const UpdateModel = () => {
               type="text"
               name="image"
               className="input border-input focus:outline-primary w-full"
-              defaultValue={thisModel?.image}
+              defaultValue={model?.image}
               required
             />
             <span className="text-sm text-muted mt-2">
