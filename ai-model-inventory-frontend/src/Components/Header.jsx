@@ -13,7 +13,7 @@ import { toast, ToastContainer } from "react-toastify";
 import { useRef } from "react";
 
 const Header = () => {
-  const { user, signOutUser, setLoading } = use(AuthContext);
+  const { user, signOutUser } = use(AuthContext);
   const navigate = useNavigate();
 
   const [showDropdown, setShowDropdown] = useState(false);
@@ -35,7 +35,6 @@ const Header = () => {
   const handleSignOut = () => {
     signOutUser().then(() => {
       toast.info("Signed Out");
-      setLoading(false);
       navigate("/");
     });
   };
@@ -134,7 +133,7 @@ const Header = () => {
                 <Link to="/purchased-models" className="hover:underline">My Purchase</Link>
                 <button
                   onClick={() => handleSignOut()}
-                  className="btn p-1 text-sm md:p-2 bg-surface border-danger cursor-pointer hover:bg-red-500!"
+                  className="btn p-1 text-sm md:p-2 bg-surface border-danger cursor-pointer hover:bg-red-500! hover:text-white! rounded-xl"
                 >
                   Sign Out
                 </button>

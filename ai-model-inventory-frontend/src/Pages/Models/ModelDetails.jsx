@@ -98,7 +98,7 @@ const ModelDetails = () => {
     <div className="bg-secondary pt-28 pb-10">
       <div className="w-10/12 mx-auto">
         <h1 className="text-2xl font-bold">{name}</h1>
-        <span className="text-sm text-muted">Created By : {createdBy}</span>
+        {/* <span className="text-sm text-muted">Created By : {createdBy}</span> */}
 
         {/* details section */}
         <div className="flex flex-col lg:flex-row gap-6 mt-2">

@@ -10,7 +10,6 @@ import LoaderSpinner from "../../Components/LoaderSpinner";
 const SignUp = () => {
   const {
     setUser,
-    loading,
     setLoading,
     googleSignIn,
     createAccount,
@@ -20,11 +19,14 @@ const SignUp = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
   const [showPassword, setShowPassword] = useState(false);
   const [passwordFormatError, setPasswordFormatError] = useState("");
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
+    setIsSubmitting(true);
 
     const form = e.target;
     const displayName = form.name.value;
@@ -94,7 +96,7 @@ const SignUp = () => {
         });
       })
       .finally(() => {
-        setLoading(false);
+        setIsSubmitting(false);
       });
     form.reset();
   };
@@ -156,15 +158,15 @@ const SignUp = () => {
       });
   };
 
-  if (loading) {
-    return <LoaderSpinner></LoaderSpinner>;
+  if(isSubmitting){
+    return <LoaderSpinner></LoaderSpinner>
   }
 
   return (
     <div className="pt-36 bg-surface pb-10">
       <div className="w-11/12 md:w-3/5 lg:w-1/3 mx-auto mt-10 bg-base p-5 shadow-lg shadow-indigo-500 rounded-md flex flex-col justify-center">
         <div className="text-center my-5">
-          <h1 className="text-2xl font-bold my-3">Create An Account</h1>
+          <h1 className="text-2xl font-bold my-3">Register for AI Model Inventory Manager</h1>
           <p className="text-sm">
             Already have an account?{" "}
             <Link to="/auth/signin" className="text-primary hover:underline">
