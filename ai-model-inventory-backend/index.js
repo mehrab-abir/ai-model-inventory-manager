@@ -31,6 +31,7 @@ async function run() {
         const db = client.db("ai-model-inventory-db");
         const userCollection = db.collection("users");
         const aiModelCollection = db.collection("ai-models");
+        const purchasedCollection = db.collection("purchased-models");
 
         //get all models
         app.get('/allmodels', async (req, res) => {
@@ -77,7 +78,7 @@ async function run() {
             res.send(afterUpdate);
         })
 
-        // //delete a model
+        //delete a model
         app.delete('/allmodels/:id',async (req,res)=>{
             const id = req.params.id;
             const afterDelete = await aiModelCollection.deleteOne({_id:new ObjectId(id)});
@@ -91,6 +92,13 @@ async function run() {
             res.send(mymodels);
         })
 
+
+        //add a model to purchasedCollection
+        app.post('/purchase-models',async (req,res)=>{
+            const model = req.body;
+            const afterPost = await purchasedCollection.insertOne(model);
+            res.send(afterPost);
+        })
 
 
         app.post('/users', async (req, res) => {

@@ -47,7 +47,7 @@ const AddModel = () => {
             Swal.fire({
               icon: "error",
               title: "Oops...",
-              text: `${err}`,
+              text: `Something went wrong!`,
             });
         })
         form.reset();

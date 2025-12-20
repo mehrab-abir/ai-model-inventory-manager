@@ -41,8 +41,8 @@ const ModelDetails = () => {
       confirmButtonText: "Yes, delete it!",
     }).then((result) => {
       if (result.isConfirmed) {
-        fetch(`http://localhost:3000/allmodels/${id}`,{
-          method : "DELETE"
+        fetch(`http://localhost:3000/allmodels/${id}`, {
+          method: "DELETE",
         })
           .then((res) => res.json())
           .then((afterDelete) => {
@@ -52,18 +52,47 @@ const ModelDetails = () => {
                 text: "Your Model has been deleted.",
                 icon: "success",
               });
-              navigate('/allmodels');
+              navigate("/allmodels");
             }
           })
-          .catch((err)=>{
+          .catch((err) => {
             Swal.fire({
               icon: "error",
               title: "Oops...",
               text: `${err}`,
             });
-          })
+          });
       }
     });
+  };
+
+  const handlePurchase = () => {
+    const purchasedModel = {name, framework,useCase, dataset,description, image,createdBy, createdAt,purchased, purchasedBy : user.email};
+
+    fetch("http://localhost:3000/purchase-models", {
+      method : 'POST',
+      headers : {
+        'content-type': 'application/json'
+      },
+      body : JSON.stringify(purchasedModel)
+    })
+      .then((res) => res.json())
+      .then((afterPost) => {
+        if (afterPost.insertedId) {
+          Swal.fire({
+            title: "Model Purchased!",
+            icon: "success",
+            theme: "auto",
+          });
+        }
+      })
+      .catch((err) => {
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: `Something went wrong!`,
+        });
+      });
   };
   return (
     <div className="bg-secondary pt-28 pb-10">
@@ -149,7 +178,11 @@ const ModelDetails = () => {
                 </div>
               </div>
             </div>
-            <button className="btn bg-primary border-none w-full text-white mt-2 cursor-pointer hover:shadow-lg hover:shadow-indigo-500">
+            <button
+              type="button"
+              onClick={() => handlePurchase()}
+              className="btn bg-primary border-none w-full text-white mt-2 cursor-pointer hover:shadow-lg hover:shadow-indigo-500"
+            >
               <LuShoppingBag className="text-white text-lg" />
               Purchase
             </button>
