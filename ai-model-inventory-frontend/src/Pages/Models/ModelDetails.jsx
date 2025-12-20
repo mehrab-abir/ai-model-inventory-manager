@@ -67,7 +67,7 @@ const ModelDetails = () => {
   };
 
   const handlePurchase = () => {
-    const purchasedModel = {name, framework,useCase, dataset,description, image,createdBy, createdAt,purchased, purchasedBy : user.email};
+    const purchasedModel = {purchasedModelId: _id, purchasedBy : user.email};
 
     fetch("http://localhost:3000/purchase-models", {
       method : 'POST',

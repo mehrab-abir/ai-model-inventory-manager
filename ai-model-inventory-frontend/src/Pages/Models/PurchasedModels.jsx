@@ -4,6 +4,7 @@ import { AuthContext } from '../Authentication/AuthContext';
 import { useEffect } from 'react';
 import { useState } from 'react';
 import LoaderSpinner from '../../Components/LoaderSpinner';
+import { Link } from 'react-router';
 
 const PurchasedModels = () => {
     const {user,loading, setLoading} = use(AuthContext);
@@ -29,31 +30,46 @@ const PurchasedModels = () => {
     return (
       <div className="bg-base pt-28 pb-10">
         <title>Purchased Models</title>
-        <div className="w-10/12 mx-auto py-10">
+        <div className="w-11/12 md:w-10/12 mx-auto py-10">
           <div className="text-center space-y-4 mb-8">
-            <h1 className="text-secondary text-3xl font-semibold">My Purchased Models</h1>
+            <h1 className="text-secondary text-3xl font-semibold">
+              My Purchased Models
+            </h1>
           </div>
 
-          <div className='mt-4 space-y-2'>
-            {
-                myPurchasedModels.map((model)=>{
-                    return (
-                        <div key={model._id} className='flex flex-col md:flex-row items-center gap-4 shadow-md shadow-indigo-400 bg-surface rounded-lg p-2 text-secondary text-sm text-center md:text-left'>
-                            <div>
-                                <img src={model.image} className='w-28 rounded-lg' alt="" />
-                            </div>
+          <div className="mt-4 space-y-3">
+            {myPurchasedModels.map((model) => {
+              return (
+                <div
+                  key={model.purchased_model._id}
+                  className="flex flex-col md:flex-row items-center justify-around gap-4 shadow-md shadow-indigo-400 bg-surface rounded-lg p-2 text-secondary text-sm text-center md:text-left"
+                >
+                  <div className='w-1/2'>
+                    <img
+                      src={model.purchased_model.image}
+                      className="w-full rounded-lg"
+                      alt=""
+                    />
+                  </div>
 
-                            <div className='space-y-1.5'>
-                                <h4 className='font-bold text-lg'>{model.name}</h4>
-                                <p>Framework : {model.framework}</p>
-                                <p>Usecase: {model.useCase}</p>
-                                <p>Created By: {model.createdBy}</p>
-                                <p>Purchased By: {user?.email}</p>
-                            </div>
-                        </div>
-                    )
-                })
-            }
+                  <div className="space-y-1.5 w-full">
+                    <h4 className="font-bold text-lg">
+                      {model.purchased_model.name}
+                    </h4>
+                    <p>Framework : {model.purchased_model.framework}</p>
+                    <p>Usecase: {model.purchased_model.useCase}</p>
+                    <p>Created By: {model.purchased_model.createdBy}</p>
+                    <p>Purchased By: {user?.email}</p>
+                    <Link
+                      to={`/allmodels/${model.purchased_model._id}`}
+                      className="btn bg-surface border-primary mt-2 text-sm! hover:shadow-lg hover:shadow-indigo-400!"
+                    >
+                      View Details
+                    </Link>
+                  </div>
+                </div>
+              );
+            })}
           </div>
         </div>
       </div>

@@ -14,7 +14,6 @@ app.get('/', (req, res) => {
 
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@cluster0.zvein0m.mongodb.net/?appName=Cluster0`;
 
-// Create a MongoClient with a MongoClientOptions object to set the Stable API version
 const client = new MongoClient(uri, {
     serverApi: {
         version: ServerApiVersion.v1,
@@ -25,7 +24,6 @@ const client = new MongoClient(uri, {
 
 async function run() {
     try {
-        // Connect the client to the server	(optional starting in v4.7)
         // await client.connect();
 
         const db = client.db("ai-model-inventory-db");
@@ -96,14 +94,29 @@ async function run() {
         //add a model to purchasedCollection
         app.post('/purchase-models',async (req,res)=>{
             const model = req.body;
-            const afterPost = await purchasedCollection.insertOne(model);
+
+            const modelToPurchase = { ...model, purchasedModelId: new ObjectId(model.purchasedModelId)};
+
+            const afterPost = await purchasedCollection.insertOne(modelToPurchase);
             res.send(afterPost);
         })
 
         //get all purchased models - purchased by the user
         app.get('/purchase-models',async (req,res)=>{
             const email = req.query.email;
-            const myPurchasedModels = await purchasedCollection.find({purchasedBy: email}).toArray();
+
+            const myPurchasedModels = await purchasedCollection.aggregate([
+                {$match: {purchasedBy : email}},
+                {
+                    $lookup : {
+                        from : "ai-models",
+                        localField: "purchasedModelId",
+                        foreignField : "_id",
+                        as : "purchased_model"
+                    }
+                },
+                {$unwind : "$purchased_model"},
+            ]).toArray();
             res.send(myPurchasedModels);
         })
 
