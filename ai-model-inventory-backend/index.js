@@ -29,7 +29,7 @@ const verifyFirebaseToken = async (req,res,next)=>{
     }
 
     try{
-        const decode = await admin.auth().verifyToken(token);
+        const decode = await admin.auth().verifyIdToken(token);
         req.token_email = decode.email;
 
         next();
