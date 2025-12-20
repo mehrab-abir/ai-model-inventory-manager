@@ -51,6 +51,22 @@ async function run() {
             res.send(modelDetails);
         })
 
+        //add a model
+        app.post('/addmodel',async (req,res)=>{
+            const newModel = req.body;
+            const afterPost = await aiModelCollection.insertOne(newModel);
+            res.send(afterPost);
+        })
+
+        //update a model
+        app.get('/update-this-model',async (req,res)=>{
+            const email = req.query.email;
+            const thisModel = await aiModelCollection.findOne({createdBy : email});
+            res.send(thisModel);
+        })
+
+
+
         app.post('/users', async (req, res) => {
             const newUser = req.body;
             const userExist = await userCollection.findOne({ email: req.body.email });

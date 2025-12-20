@@ -1,5 +1,5 @@
 import React from 'react';
-import ModelCard from '../../Components/Models/ModelCard';
+import ModelCard from '../Models/ModelCard';
 import { useEffect } from 'react';
 import { useState } from 'react';
 

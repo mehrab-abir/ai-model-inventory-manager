@@ -1,6 +1,6 @@
 import React, { use, useEffect, useState } from "react";
 import logo from "./../assets/logo-transparent.png";
-// import userAvatar from "./../assets/userAvatar.png";
+import userAvatar from "./../assets/userAvatar.png";
 import { Link, NavLink, useNavigate } from "react-router";
 import { CiLight } from "react-icons/ci";
 import { MdDarkMode } from "react-icons/md";
@@ -36,8 +36,7 @@ const Header = () => {
     })
   }
 
-  // const userPicture =
-  //   user?.photoURL || user?.providerData[0]?.photoURL || userAvatar;
+  const userPicture = user?.photoURL || user?.providerData[0]?.photoURL || userAvatar;
 
   return (
     <header className="bg-surface fixed w-full z-50 shadow-xl">
@@ -92,12 +91,15 @@ const Header = () => {
           )}
 
           {user ? (
-            <button
-              onClick={() => handleSignOut()}
-              className="btn p-1 text-sm md:p-2 bg-surface border-danger cursor-pointer"
-            >
-              Sign Out
-            </button>
+            <div className="flex items-center gap-2">
+              <img src={userPicture} className="w-12 rounded-full" alt="user" />
+              <button
+                onClick={() => handleSignOut()}
+                className="btn p-1 text-sm md:p-2 bg-surface border-danger cursor-pointer"
+              >
+                Sign Out
+              </button>
+            </div>
           ) : (
             <div className="flex items-center space-x-4">
               {/* md to large device */}
@@ -105,7 +107,7 @@ const Header = () => {
                 to="/auth/signin"
                 className="btn bg-surface border border-primary hidden md:flex"
               >
-                Login
+                Sign In
               </Link>
 
               {/* only in small device */}
@@ -114,7 +116,7 @@ const Header = () => {
                 className="flex flex-col md:hidden items-center text-center"
               >
                 <CiLogin className="text-2xl text-primary" />
-                <span className="text-primary">Login</span>
+                <span className="text-primary">Sign In</span>
               </Link>
 
               {/* only in small device */}

@@ -1,5 +1,5 @@
 import React from "react";
-import { useLoaderData } from "react-router";
+import { Link, useLoaderData } from "react-router";
 import { SiFramework } from "react-icons/si";
 import { IoMdTrendingUp } from "react-icons/io";
 import { BiSolidPurchaseTag } from "react-icons/bi";
@@ -7,8 +7,13 @@ import { GoDatabase } from "react-icons/go";
 import { SlCalender } from "react-icons/sl";
 import { LuShoppingBag } from "react-icons/lu";
 import { CiStar } from "react-icons/ci";
+import { MdOutlineEdit } from "react-icons/md";
+import { use } from "react";
+import { AuthContext } from "../Authentication/AuthContext";
 
 const ModelDetails = () => {
+  const {user} = use(AuthContext);
+
   const model = useLoaderData();
   const {
     name,
@@ -35,6 +40,18 @@ const ModelDetails = () => {
               alt=""
               className="rounded-lg object-cover shadow-lg"
             />
+            {user?.email === createdBy ? (
+              <div className="flex gap-4 mt-2">
+                <Link to={`/update-this-model`} className="btn bg-surface border-info text-accent cursor-pointer text-sm">
+                  Edit <MdOutlineEdit className="text-xl" />
+                </Link>
+                <button className="btn bg-surface border-danger text-accent cursor-pointer text-sm hover:bg-red-500! hover:text-white!">
+                  Delete
+                </button>
+              </div>
+            ) : (
+              ""
+            )}
 
             <div className="bg-surface mt-5 rounded-lg shadow-md p-4 border border-gray-200">
               <h3 className="text-lg font-bold mb-6">Description</h3>

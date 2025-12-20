@@ -1,5 +1,5 @@
 import React from 'react';
-import ModelCard from '../../Components/Models/ModelCard';
+import ModelCard from './ModelCard';
 import { useLoaderData } from 'react-router';
 
 const AllModels = () => {
@@ -7,6 +7,7 @@ const AllModels = () => {
   // console.log(allmodels);
     return (
       <div className="bg-base pt-28">
+        <title>All Models</title>
         <div className="w-10/12 mx-auto py-10">
           <div className="text-center space-y-4 mb-8">
             <h1 className="text-secondary text-3xl font-semibold">

@@ -8,6 +8,8 @@ import SignUp from "../Pages/Authentication/SignUp";
 import ErrorPage from "../Components/ErrorPage";
 import LoaderSpinner from "../Components/LoaderSpinner";
 import ModelDetails from "../Pages/Models/ModelDetails";
+import AddModel from "../Pages/Models/AddModel";
+import UpdateModel from "../Pages/Models/UpdateModel";
 
 const router = createBrowserRouter([
   {
@@ -32,6 +34,14 @@ const router = createBrowserRouter([
           fetch(`http://localhost:3000/allmodels/${params.id}`),
         hydrateFallbackElement : LoaderSpinner
       },
+      {
+        path : "addmodel",
+        Component : AddModel
+      },
+      {
+        path : '/update-this-model',
+        Component : UpdateModel
+      }
     ],
   },
   {

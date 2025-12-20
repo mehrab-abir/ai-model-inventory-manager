@@ -24,7 +24,8 @@ body {
   .bg-hover { background-color: #292578; } /* Indigo (hover) */
   .bg-secondary { background-color: #F2F3F8;}   /* Very light indigo-gray */
   .bg-muted { background-color: #F3F4F6; }       /* Light gray */
-  .bg-accent { background-color: #e0e8ff; }      /* Light indigo tint */
+  .bg-accent { background-color: #e0e8ff; }  /* Light indigo tint */
+  .bg-footer{background-color: #cfd0d1 ;}     
 
   .bg-info { background-color: #0EA5E9; }        /* Sky blue (info/highlight) */
   .bg-danger { background-color: #EF4444; }      /* Red */
@@ -71,6 +72,7 @@ body {
   .bg-accent { background-color: #334155; }       /* Medium slate */
   .bg-info { background-color: #0EA5E9; }         /* Sky blue (info/highlight) */
   .bg-danger { background-color: #EF4444; }       /* Red */
+  .bg-footer{background-color: #1E293B ;} 
 
   /* ---------- Text ---------- */
   .text-base { color: #F1F5F9; }                  /* Light blue-gray */
@@ -97,7 +99,6 @@ body {
   .border-input { border-color: #334155; }        /* Medium slate */
 
   /* ---------- Focus & Rings ---------- */
-  .ring-primary { box-shadow: 0 0 0 3px #6366F133; } /* Indigo (20% opacity) */
   .outline-primary { outline: 2px solid #6366F1; outline-offset: 2px; } /* Indigo focus */
 }
 

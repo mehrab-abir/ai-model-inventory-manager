@@ -32,7 +32,7 @@ const ModelCard = ({model}) => {
           </div>
           <Link
             to={`/allmodels/${_id}`}
-            className="btn bg-primary w-full text-white rounded-xl mt-4"
+            className="btn bg-surface text-primary border-primary w-full rounded-xl mt-4"
           >
             View Details
           </Link>

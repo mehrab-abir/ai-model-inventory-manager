@@ -7,6 +7,7 @@ import GetStarted from './GetStarted';
 const Home = () => {
     return (
         <div className='pt-20'>
+            <title>AI Model Inventory - Home</title>
             <Banner></Banner>
             <FeaturedModels></FeaturedModels>
             <AboutModels></AboutModels>
