@@ -77,7 +77,12 @@ async function run() {
             res.send(afterUpdate);
         })
 
-        //delete a model
+        // //delete a model
+        app.delete('/allmodels/:id',async (req,res)=>{
+            const id = req.params.id;
+            const afterDelete = await aiModelCollection.deleteOne({_id:new ObjectId(id)});
+            res.send(afterDelete);
+        })
 
         //get my model
         app.get('/mymodels',async (req,res)=>{

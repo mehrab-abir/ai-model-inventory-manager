@@ -1,5 +1,4 @@
 import React from "react";
-import ModelCard from "./ModelCard";
 import { useEffect } from "react";
 import { use } from "react";
 import { AuthContext } from "../Authentication/AuthContext";

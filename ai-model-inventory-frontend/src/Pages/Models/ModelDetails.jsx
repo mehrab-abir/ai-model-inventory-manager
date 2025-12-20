@@ -1,5 +1,5 @@
 import React from "react";
-import { Link, useLoaderData } from "react-router";
+import { Link, useLoaderData, useNavigate } from "react-router";
 import { SiFramework } from "react-icons/si";
 import { IoMdTrendingUp } from "react-icons/io";
 import { BiSolidPurchaseTag } from "react-icons/bi";
@@ -14,6 +14,7 @@ import Swal from "sweetalert2";
 
 const ModelDetails = () => {
   const { user } = use(AuthContext);
+  const navigate = useNavigate();
 
   const model = useLoaderData();
   const {
@@ -40,7 +41,9 @@ const ModelDetails = () => {
       confirmButtonText: "Yes, delete it!",
     }).then((result) => {
       if (result.isConfirmed) {
-        fetch(`http://localhost:3000/${id}`)
+        fetch(`http://localhost:3000/allmodels/${id}`,{
+          method : "DELETE"
+        })
           .then((res) => res.json())
           .then((afterDelete) => {
             if (afterDelete.deletedCount) {
@@ -49,8 +52,16 @@ const ModelDetails = () => {
                 text: "Your Model has been deleted.",
                 icon: "success",
               });
+              navigate('/allmodels');
             }
-          });
+          })
+          .catch((err)=>{
+            Swal.fire({
+              icon: "error",
+              title: "Oops...",
+              text: `${err}`,
+            });
+          })
       }
     });
   };
