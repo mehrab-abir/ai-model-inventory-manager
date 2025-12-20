@@ -81,6 +81,12 @@ const Header = () => {
           >
             My Models
           </NavLink>
+          <NavLink
+            to="/purchased-models"
+            className="hover:text-primary hover:tracking-wider transition-all duration-300"
+          >
+            My Purchase
+          </NavLink>
         </nav>
 
         <div className="user-action flex items-center space-x-2">

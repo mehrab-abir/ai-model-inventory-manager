@@ -85,7 +85,7 @@ async function run() {
             res.send(afterDelete);
         })
 
-        //get my model
+        //get my models - posted by the user
         app.get('/mymodels',async (req,res)=>{
             const email = req.query.email;
             const mymodels = await aiModelCollection.find({createdBy : email}).toArray();
@@ -98,6 +98,13 @@ async function run() {
             const model = req.body;
             const afterPost = await purchasedCollection.insertOne(model);
             res.send(afterPost);
+        })
+
+        //get all purchased models - purchased by the user
+        app.get('/purchase-models',async (req,res)=>{
+            const email = req.query.email;
+            const myPurchasedModels = await purchasedCollection.find({purchasedBy: email}).toArray();
+            res.send(myPurchasedModels);
         })
 
 
