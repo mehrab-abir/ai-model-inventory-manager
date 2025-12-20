@@ -189,14 +189,14 @@ const Header = () => {
           onClick={() => setOpenMenu(!openMenu)}
           className="text-4xl absolute top-10 right-10 cursor-pointer text-gray-400"
         />
-        <nav className="flex flex-col items-center mt-20 space-y-2.5">
-          <NavLink to="/" onClick={() => setOpenMenu(!openMenu)}>
+        <nav className="flex flex-col items-center mt-20 space-y-3">
+          <NavLink to="/" onClick={() => setOpenMenu(!openMenu)} className="text-lg">
             Home
           </NavLink>
-          <NavLink to="/allmodels" onClick={() => setOpenMenu(!openMenu)}>
+          <NavLink to="/allmodels" onClick={() => setOpenMenu(!openMenu)} className="text-lg">
             All Models
           </NavLink>
-          <NavLink to="/addmodel" onClick={() => setOpenMenu(!openMenu)}>
+          <NavLink to="/addmodel" onClick={() => setOpenMenu(!openMenu)} className="text-lg">
             Add a Model
           </NavLink>
         </nav>

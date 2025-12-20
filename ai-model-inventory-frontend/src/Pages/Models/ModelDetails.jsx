@@ -198,10 +198,10 @@ const ModelDetails = () => {
             </button>
           </div>
         </div>
-        <div className="w-full lg:w-[70%] bg-surface mt-5 rounded-lg shadow-md p-4 border border-gray-200">
+        {/* <div className="w-full lg:w-[70%] bg-surface mt-5 rounded-lg shadow-md p-4 border border-gray-200">
           <h3 className="text-lg font-semibold mb-6">Rate this Model</h3>
           <CiStar className="text-xl" />
-        </div>
+        </div> */}
       </div>
     </div>
   );
