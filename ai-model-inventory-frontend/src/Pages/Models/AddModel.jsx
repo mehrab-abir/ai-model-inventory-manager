@@ -14,7 +14,7 @@ const AddModel = () => {
         const form = e.target;
         const name = form.name.value;
         const framework = form.framework.value;
-        const usecase = form.usecase.value;
+        const useCase = form.usecase.value;
         const dataset = form.dataset.value;
         const image = form.image.value;
         const description = form.description.value;
@@ -23,7 +23,7 @@ const AddModel = () => {
         const purchased = 0;
 
         // console.log({name,framework,dataset,usecase, description,image,createdBy,createdAt,purchased});
-        const newModel = {name,framework,dataset,usecase, description,image,createdBy,createdAt,purchased};
+        const newModel = {name,framework,dataset,useCase, description,image,createdBy,createdAt,purchased};
 
         fetch(`http://localhost:3000/addmodel`,{
             method : 'POST',

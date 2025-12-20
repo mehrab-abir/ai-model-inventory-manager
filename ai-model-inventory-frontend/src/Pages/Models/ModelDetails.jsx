@@ -97,7 +97,7 @@ const ModelDetails = () => {
                 <div className="flex gap-4 items-center">
                   <SlCalender />
                   <div className="flex flex-col">
-                    <span className="text-muted">Created</span>
+                    <span className="text-muted">Created at</span>
                     <span>{new Date(createdAt).toDateString()}</span>
                   </div>
                 </div>

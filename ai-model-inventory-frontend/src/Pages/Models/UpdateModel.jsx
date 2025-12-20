@@ -36,28 +36,28 @@ const UpdateModel = () => {
     const form = e.target;
     const name = form.name.value;
     const framework = form.framework.value;
-    const usecase = form.usecase.value;
+    const useCase = form.usecase.value;
     const dataset = form.dataset.value;
     const image = form.image.value;
     const description = form.description.value;
-    const createdBy = user.email;
-    const createdAt = thisModel.createdAt;
-    const purchased = thisModel.purchased;
 
     // console.log({name,framework,dataset,usecase, description,image,createdBy,createdAt,purchased});
-    const newModel = {
+    const updatedModel = {
       name,
       framework,
       dataset,
-      usecase,
+      useCase,
       description,
-      image,
-      createdBy,
-      createdAt,
-      purchased,
+      image
     };
 
-    fetch(`http://localhost:3000/update-model`, {})
+    fetch(`http://localhost:3000/update-model/${thisModel._id}`, {
+        method : "PATCH",
+        headers : {
+            'content-type' : 'application/json'
+        },
+        body : JSON.stringify(updatedModel)
+    })
       .then((res) => res.json())
       .then((afterUpdate) => {
         if (afterUpdate.modifiedCount) {
@@ -67,9 +67,10 @@ const UpdateModel = () => {
             theme: "auto",
           });
           console.log(afterUpdate);
-        // navigate(`/allmodels/${afterUpdate.}`)
+        navigate(`/allmodels/${thisModel._id}`);
         }
       });
+      form.reset();
   };
 
   return (
@@ -79,8 +80,6 @@ const UpdateModel = () => {
         <h1 className="text-3xl text-secondary font-semibold mb-2 text-center flex items-center justify-center">
           Update Your AI Model <MdOutlineEdit className="ml-2" />
         </h1>
-
-        {/* <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Minus amet provident laudantium doloremque debitis ut! Sunt, deserunt id. Voluptatum quae facilis natus! Repudiandae placeat nihil illo quibusdam consequuntur laboriosam iste, iure eius id molestias temporibus itaque eveniet, tempora asperiores voluptates et molestiae. Labore deserunt assumenda quaerat hic et nihil nisi.</p> */}
 
         <form
           onSubmit={(e) => handleUpdateModel(e)}
@@ -136,7 +135,7 @@ const UpdateModel = () => {
               <label className="fotn-semibold">Use Case</label>
               <select
                 name="usecase"
-                defaultValue={thisModel?.usecase}
+                defaultValue={thisModel?.useCase}
                 className="select border-input focus:outline-primary!  cursor-pointer w-full"
                 required
               >

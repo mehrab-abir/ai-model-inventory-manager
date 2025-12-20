@@ -33,36 +33,48 @@ async function run() {
         const aiModelCollection = db.collection("ai-models");
 
         //get all models
-        app.get('/allmodels',async (req,res)=>{
+        app.get('/allmodels', async (req, res) => {
             const allmodels = await aiModelCollection.find().toArray();
             res.send(allmodels);
         })
 
         //get latest 6 models
-        app.get('/latest',async (req,res)=>{
-            const latest = await aiModelCollection.find().sort({created_at:-1}).limit(6).toArray();
+        app.get('/latest', async (req, res) => {
+            const latest = await aiModelCollection.find().sort({ created_at: -1 }).limit(6).toArray();
             res.send(latest);
         })
 
         //details of a specific model
-        app.get('/allmodels/:id',async (req,res)=>{
+        app.get('/allmodels/:id', async (req, res) => {
             const id = req.params.id;
-            const modelDetails = await aiModelCollection.findOne({_id : new ObjectId(id)});
+            const modelDetails = await aiModelCollection.findOne({ _id: new ObjectId(id) });
             res.send(modelDetails);
         })
 
         //add a model
-        app.post('/addmodel',async (req,res)=>{
+        app.post('/addmodel', async (req, res) => {
             const newModel = req.body;
             const afterPost = await aiModelCollection.insertOne(newModel);
             res.send(afterPost);
         })
 
-        //update a model
-        app.get('/update-this-model',async (req,res)=>{
+        //get the model that is to be updated 
+        app.get('/update-this-model', async (req, res) => {
             const email = req.query.email;
-            const thisModel = await aiModelCollection.findOne({createdBy : email});
+            const thisModel = await aiModelCollection.findOne({ createdBy: email });
             res.send(thisModel);
+        })
+
+        //update a model
+        app.patch('/update-model/:id', async (req, res) => {
+            const updatedModel = req.body;
+            const id = req.params.id;
+            const afterUpdate = await aiModelCollection.updateOne({ _id: new ObjectId(id) },
+                {
+                    $set : updatedModel
+                }
+            );
+            res.send(afterUpdate);
         })
 
 
