@@ -75,6 +75,12 @@ const Header = () => {
           >
             Add a Model
           </NavLink>
+          <NavLink
+            to="/mymodels"
+            className="hover:text-primary hover:tracking-wider transition-all duration-300"
+          >
+            My Models
+          </NavLink>
         </nav>
 
         <div className="user-action flex items-center space-x-2">

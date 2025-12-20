@@ -10,6 +10,7 @@ import LoaderSpinner from "../Components/LoaderSpinner";
 import ModelDetails from "../Pages/Models/ModelDetails";
 import AddModel from "../Pages/Models/AddModel";
 import UpdateModel from "../Pages/Models/UpdateModel";
+import MyModels from "../Pages/Models/MyModels";
 
 const router = createBrowserRouter([
   {
@@ -41,6 +42,10 @@ const router = createBrowserRouter([
       {
         path : '/update-this-model',
         Component : UpdateModel
+      },
+      {
+        path : '/mymodels',
+        Component : MyModels
       }
     ],
   },
