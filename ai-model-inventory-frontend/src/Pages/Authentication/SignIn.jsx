@@ -51,7 +51,6 @@ const SignIn = () => {
 
   //sign in with google
   const signInWithGoogle = ()=>{
-    setIsSubmitting(true);
 
     googleSignIn()
     .then((result)=>{
@@ -104,7 +103,7 @@ const SignIn = () => {
         });
     })
     .finally(()=>{
-        setIsSubmitting(false);
+
     })
   }
 

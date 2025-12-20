@@ -102,8 +102,6 @@ const SignUp = () => {
 
   //sign in with google
   const signInWithGoogle = () => {
-    setIsSubmitting(true);
-
     googleSignIn()
       .then((result) => {
         const user = result.user;
@@ -155,7 +153,7 @@ const SignUp = () => {
         });
       })
       .finally(() => {
-        setIsSubmitting(false);
+
       });
   };
 
