@@ -30,8 +30,8 @@ const ModelDetails = () => {
     purchased,
   } = model;
 
-  const deleteModel = (id) => {
-    Swal.fire({
+  const deleteModel = async (id) => {
+    const result = await Swal.fire({
       title: "Are you sure?",
       text: "You won't be able to revert this!",
       icon: "warning",
@@ -39,32 +39,31 @@ const ModelDetails = () => {
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
       confirmButtonText: "Yes, delete it!",
-    }).then((result) => {
-      if (result.isConfirmed) {
-        fetch(`http://localhost:3000/allmodels/${id}`, {
-          method: "DELETE",
-        })
-          .then((res) => res.json())
-          .then((afterDelete) => {
-            if (afterDelete.deletedCount) {
-              Swal.fire({
-                title: "Deleted!",
-                text: "Your Model has been deleted.",
-                icon: "success",
-              });
-              navigate("/allmodels");
-            }
-          })
-          .catch((err) => {
-            Swal.fire({
-              icon: "error",
-              title: "Oops...",
-              text: `${err}`,
-            });
-          });
-      }
     });
+
+    if (result.isConfirmed) {
+      const token = await user.getIdToken();
+
+      const res = await fetch(`http://localhost:3000/allmodels/${id}`, {
+        method: "DELETE",
+        headers: {
+          authorization: `Bearer ${token}`,
+        },
+      });
+
+      const afterDelete = await res.json();
+
+      if (afterDelete.deletedCount) {
+        Swal.fire({
+          title: "Deleted!",
+          text: "Your Model has been deleted.",
+          icon: "success",
+        });
+        navigate("/allmodels");
+      }
+    }
   };
+
 
   const handlePurchase = () => {
     const purchasedModel = {purchasedModelId: _id, purchasedBy : user.email};

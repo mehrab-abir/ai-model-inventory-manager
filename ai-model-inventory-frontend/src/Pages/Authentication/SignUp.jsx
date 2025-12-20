@@ -10,7 +10,6 @@ import LoaderSpinner from "../../Components/LoaderSpinner";
 const SignUp = () => {
   const {
     setUser,
-    setLoading,
     googleSignIn,
     createAccount,
     updateUser,
@@ -103,6 +102,8 @@ const SignUp = () => {
 
   //sign in with google
   const signInWithGoogle = () => {
+    setIsSubmitting(true);
+
     googleSignIn()
       .then((result) => {
         const user = result.user;
@@ -154,7 +155,7 @@ const SignUp = () => {
         });
       })
       .finally(() => {
-        setLoading(false);
+        setIsSubmitting(false);
       });
   };
 

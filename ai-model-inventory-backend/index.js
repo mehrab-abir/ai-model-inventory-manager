@@ -1,12 +1,42 @@
 const express = require('express');
 const app = express();
+const admin = require("firebase-admin");
 require('dotenv').config()
 const cors = require('cors');
 const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 const port = process.env.PORT || 3000;
 
+const serviceAccount = require("./ai-model-inventory-service-key.json");
+
+admin.initializeApp({
+    credential: admin.credential.cert(serviceAccount)
+});
+
 app.use(express.json());
 app.use(cors());
+
+//jwt token virification
+const verifyFirebaseToken = async (req,res,next)=>{
+    if(!req.headers.authorization){
+        return res.status(401).send({message: "unauthorized access"});
+    }
+
+    const token = req.headers.authorization.split(' ')[1];
+
+    if(!token){
+        return res.status(401).send({ message: "unauthorized access" });
+    }
+
+    try{
+        const decode = await admin.auth().verifyToken(token);
+        req.token_email = decode.email;
+
+        next();
+    }
+    catch{
+        return res.status(401).send({ message: "unauthorized access" });
+    }
+}
 
 app.get('/', (req, res) => {
     res.send("'AI Inventory Manager' Server is running");
@@ -65,9 +95,17 @@ async function run() {
         })
 
         //update a model
-        app.patch('/update-model/:id', async (req, res) => {
+        app.patch('/update-model/:id', verifyFirebaseToken, async (req, res) => {
+            // console.log('Headers, ',req.headers)
             const updatedModel = req.body;
             const id = req.params.id;
+
+            const model = await aiModelCollection.findOne({_id: new ObjectId(id)});
+
+            if(model.createdBy !== req.token_email){
+                return res.status(403).send({message: "forbidden access"});
+            }
+
             const afterUpdate = await aiModelCollection.updateOne({ _id: new ObjectId(id) },
                 {
                     $set : updatedModel
@@ -77,8 +115,14 @@ async function run() {
         })
 
         //delete a model
-        app.delete('/allmodels/:id',async (req,res)=>{
+        app.delete('/allmodels/:id',verifyFirebaseToken, async (req,res)=>{
             const id = req.params.id;
+            const model = await aiModelCollection.findOne({_id : new ObjectId(id)});
+
+            if(model.createdBy !== req.token_email){
+                return res.status(403).send({message: "forbidden access"});
+            }
+
             const afterDelete = await aiModelCollection.deleteOne({_id:new ObjectId(id)});
             res.send(afterDelete);
         })
@@ -101,7 +145,7 @@ async function run() {
             res.send(afterPost);
         })
 
-        //get all purchased models - purchased by the user
+        //getting all purchased models - purchased by the logged in user
         app.get('/purchase-models',async (req,res)=>{
             const email = req.query.email;
 

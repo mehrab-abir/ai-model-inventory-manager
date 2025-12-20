@@ -1,15 +1,17 @@
 import React from "react";
 import Swal from "sweetalert2";
 import { MdOutlineEdit } from "react-icons/md";
-import LoaderSpinner from "../../Components/LoaderSpinner";
 import { useLoaderData, useNavigate } from "react-router";
+import { use } from "react";
+import { AuthContext } from "../Authentication/AuthContext";
 
 const UpdateModel = () => {
+  const {user} = use(AuthContext);
   const navigate = useNavigate();
 
   const model = useLoaderData();
 
-  const handleUpdateModel = (e) => {
+  const handleUpdateModel = async (e) => {
     e.preventDefault();
 
     const form = e.target;
@@ -30,25 +32,28 @@ const UpdateModel = () => {
       image
     };
 
-    fetch(`http://localhost:3000/update-model/${model._id}`, {
-        method : "PATCH",
-        headers : {
-            'content-type' : 'application/json'
-        },
-        body : JSON.stringify(updatedModel)
-    })
-      .then((res) => res.json())
-      .then((afterUpdate) => {
-        if (afterUpdate.modifiedCount) {
+    const token = await user.getIdToken();
+
+    const res = await fetch(`http://localhost:3000/update-model/${model._id}`, {
+      method: "PATCH",
+      headers: {
+        "content-type": "application/json",
+        authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(updatedModel),
+    });
+
+    const afterUpdate = await res.json();
+
+    if (afterUpdate.modifiedCount) {
           Swal.fire({
             title: "Model Updated!",
             icon: "success",
             theme: "auto",
           });
           console.log(afterUpdate);
-        navigate(`/allmodels/${model._id}`);
+          navigate(`/allmodels/${model._id}`);
         }
-      });
       form.reset();
   };
 

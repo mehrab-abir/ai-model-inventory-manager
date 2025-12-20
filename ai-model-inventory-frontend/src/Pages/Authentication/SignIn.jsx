@@ -8,11 +8,12 @@ import { Bounce, toast, ToastContainer } from "react-toastify";
 import LoaderSpinner from "../../Components/LoaderSpinner";
 
 const SignIn = () => {
-  const { signin, googleSignIn, setUser,loading, setLoading, forgotPassword } =
+  const { signin, googleSignIn, setUser, forgotPassword } =
     use(AuthContext);
   const navigate = useNavigate();
   const location = useLocation();
 
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [signinError, setSigninError] = useState('');
   const [resetPasswordMessage, setResetPasswordMessage] = useState("");
@@ -23,6 +24,7 @@ const SignIn = () => {
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
+    setIsSubmitting(true);
 
     const form = e.target;
     const email = form.email.value;
@@ -43,17 +45,18 @@ const SignIn = () => {
         } 
     })
     .finally(()=>{
-        setLoading(false);
+        setIsSubmitting(false);
     })
   };
 
   //sign in with google
   const signInWithGoogle = ()=>{
+    setIsSubmitting(true);
+
     googleSignIn()
     .then((result)=>{
         const user = result.user;
         setUser(user);
-        setLoading(false);
         
         const newUser = {
             displayName : user.displayName,
@@ -101,7 +104,7 @@ const SignIn = () => {
         });
     })
     .finally(()=>{
-        setLoading(false);
+        setIsSubmitting(false);
     })
   }
 
@@ -125,11 +128,11 @@ const SignIn = () => {
         setResetPasswordError(err.code);
     })
     .finally(()=>{
-        setLoading(false);
+        setIsSubmitting(false);
     })
   }
 
-  if(loading){
+  if(isSubmitting){
     return <LoaderSpinner></LoaderSpinner>
   }
 

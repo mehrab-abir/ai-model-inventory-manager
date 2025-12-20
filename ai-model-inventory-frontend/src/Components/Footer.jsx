@@ -1,9 +1,9 @@
 import React from 'react';
 import logo from './../assets/logo-transparent.png'
 import { Link } from 'react-router';
-import { FaSquareFacebook } from "react-icons/fa6";
 import { FaInstagramSquare } from "react-icons/fa";
 import { FaXTwitter } from "react-icons/fa6";
+import { FaGithub } from "react-icons/fa";
 import { BsLinkedin } from "react-icons/bs";
 
 const Footer = () => {
@@ -23,15 +23,17 @@ const Footer = () => {
           <div className="flex-1 mt-10 md:mt-0">
             <h4 className="text-lg font-semibold">Quick Links</h4>
             <div className="flex flex-col items-start mt-5 space-y-2.5">
-              <Link to='/'>Home</Link>
-              <Link to='/allmodels'>All Models</Link>
-              <Link to='/addmodel'>Add Model</Link>
+              <Link to="/">Home</Link>
+              <Link to="/allmodels">All Models</Link>
+              <Link to="/addmodel">Add Model</Link>
             </div>
           </div>
           <div className="flex-1 mt-10 md:mt-0">
             <h4 className="text-lg font-semibold">Connect</h4>
             <div className="flex items-center mt-5 gap-8">
-              <FaSquareFacebook className="text-2xl cursor-pointer" />
+              <Link to="https://github.com/mehrab-abir/ai-model-inventory-manager" target='_blank'>
+                <FaGithub className="text-2xl" />
+              </Link>
               <FaInstagramSquare className="text-2xl cursor-pointer" />
               <FaXTwitter className="text-2xl cursor-pointer" />
               <BsLinkedin className="text-2xl cursor-pointer" />
