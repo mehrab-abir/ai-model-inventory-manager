@@ -164,6 +164,16 @@ async function run() {
             res.send(myPurchasedModels);
         })
 
+        //update purchase count of a model
+        app.patch('/allmodels/:id',async (req,res)=>{
+            const id = req.params.id;
+            const afterIncrement = await aiModelCollection.updateOne({_id:new ObjectId(id)},
+            {
+                $inc : {purchased : 1}
+            }
+        );
+        res.send(afterIncrement);
+        })
 
         app.post('/users', async (req, res) => {
             const newUser = req.body;

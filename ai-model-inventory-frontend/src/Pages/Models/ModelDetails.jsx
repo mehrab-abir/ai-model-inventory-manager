@@ -11,6 +11,7 @@ import { MdOutlineEdit } from "react-icons/md";
 import { use } from "react";
 import { AuthContext } from "../Authentication/AuthContext";
 import Swal from "sweetalert2";
+import { useState } from "react";
 
 const ModelDetails = () => {
   const { user } = use(AuthContext);
@@ -29,6 +30,8 @@ const ModelDetails = () => {
     createdAt,
     purchased,
   } = model;
+
+  const [purchasedCount, setPurchasedCount] = useState(purchased);
 
   const deleteModel = async (id) => {
     const result = await Swal.fire({
@@ -64,25 +67,33 @@ const ModelDetails = () => {
     }
   };
 
-
   const handlePurchase = () => {
-    const purchasedModel = {purchasedModelId: _id, purchasedBy : user.email};
+    const purchasedModel = { purchasedModelId: _id, purchasedBy: user.email };
 
     fetch("http://localhost:3000/purchase-models", {
-      method : 'POST',
-      headers : {
-        'content-type': 'application/json'
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
       },
-      body : JSON.stringify(purchasedModel)
+      body: JSON.stringify(purchasedModel),
     })
       .then((res) => res.json())
       .then((afterPost) => {
         if (afterPost.insertedId) {
-          Swal.fire({
-            title: "Model Purchased!",
-            icon: "success",
-            theme: "auto",
-          });
+          fetch(`http://localhost:3000/allmodels/${_id}`, {
+            method: "PATCH",
+          })
+            .then((res) => res.json())
+            .then((afterUpdate) => {
+              if (afterUpdate.modifiedCount) {
+                Swal.fire({
+                  title: "Model Purchased!",
+                  icon: "success",
+                  theme: "auto",
+                });
+                setPurchasedCount((prev) => prev + 1);
+              }
+            });
         }
       })
       .catch(() => {
@@ -164,7 +175,7 @@ const ModelDetails = () => {
                   <BiSolidPurchaseTag />
                   <div className="flex flex-col">
                     <span className="text-muted">Purchased</span>
-                    <span>{purchased} times</span>
+                    <span>{purchasedCount} times</span>
                   </div>
                 </div>
 
