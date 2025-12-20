@@ -43,7 +43,7 @@ const AddModel = () => {
             }
             navigate('/allmodels');
         })
-        .catch((err)=>{
+        .catch(()=>{
             Swal.fire({
               icon: "error",
               title: "Oops...",

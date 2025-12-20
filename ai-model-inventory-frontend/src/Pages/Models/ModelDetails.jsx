@@ -86,7 +86,7 @@ const ModelDetails = () => {
           });
         }
       })
-      .catch((err) => {
+      .catch(() => {
         Swal.fire({
           icon: "error",
           title: "Oops...",
