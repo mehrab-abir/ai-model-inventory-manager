@@ -175,6 +175,23 @@ async function run() {
         res.send(afterIncrement);
         })
 
+        //filter models by framework
+        app.get('/filter-models',async (req,res)=>{
+            const { framework } = req.query;
+
+            const query = framework ? { framework } : {};
+            const result = await aiModelCollection.find(query).toArray();
+
+            res.send(result);
+        })
+
+        //search models by name
+        app.get('/search-models',async (req,res)=>{
+            const {name} = req.query;
+            const result = await aiModelCollection.find({name: {$regex: name, $options : 'i'}}).toArray();
+            res.send(result);
+        })
+
         app.post('/users', async (req, res) => {
             const newUser = req.body;
             const userExist = await userCollection.findOne({ email: req.body.email });

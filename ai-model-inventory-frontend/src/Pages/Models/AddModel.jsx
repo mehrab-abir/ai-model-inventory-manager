@@ -60,8 +60,6 @@ const AddModel = () => {
         <h1 className="text-3xl font-bold mb-2">Add New AI Model</h1>
         <p className="text-muted">Share your AI Model with the community</p>
 
-    {/* <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Minus amet provident laudantium doloremque debitis ut! Sunt, deserunt id. Voluptatum quae facilis natus! Repudiandae placeat nihil illo quibusdam consequuntur laboriosam iste, iure eius id molestias temporibus itaque eveniet, tempora asperiores voluptates et molestiae. Labore deserunt assumenda quaerat hic et nihil nisi.</p> */}
-
         <form onSubmit={(e)=>handleAddModel(e)} className="mt-10 space-y-4">
           <div className="flex flex-col">
             <label className="fotn-semibold">Model Name</label>
@@ -99,7 +97,7 @@ const AddModel = () => {
                 <option>DGL</option>
                 <option>Gensim</option>
                 <option>CatBoost</option>
-                <option>LightBGM</option>
+                <option>LightGBM</option>
                 <option>XGBoost</option>
                 <option>spaCy</option>
                 <option>MXNet</option>
