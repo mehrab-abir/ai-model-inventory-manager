@@ -10,9 +10,10 @@ import { CiStar } from "react-icons/ci";
 import { MdOutlineEdit } from "react-icons/md";
 import { use } from "react";
 import { AuthContext } from "../Authentication/AuthContext";
+import Swal from "sweetalert2";
 
 const ModelDetails = () => {
-  const {user} = use(AuthContext);
+  const { user } = use(AuthContext);
 
   const model = useLoaderData();
   const {
@@ -27,6 +28,32 @@ const ModelDetails = () => {
     createdAt,
     purchased,
   } = model;
+
+  const deleteModel = (id) => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        fetch(`http://localhost:3000/${id}`)
+          .then((res) => res.json())
+          .then((afterDelete) => {
+            if (afterDelete.deletedCount) {
+              Swal.fire({
+                title: "Deleted!",
+                text: "Your Model has been deleted.",
+                icon: "success",
+              });
+            }
+          });
+      }
+    });
+  };
   return (
     <div className="bg-secondary pt-28 pb-10">
       <div className="w-10/12 mx-auto">
@@ -43,10 +70,17 @@ const ModelDetails = () => {
             />
             {user?.email === createdBy ? (
               <div className="flex gap-4 mt-2">
-                <Link to={`/update-this-model/${_id}`} className="btn bg-surface border-info text-accent cursor-pointer text-sm">
+                <Link
+                  to={`/update-this-model/${_id}`}
+                  className="btn bg-surface border-info text-accent cursor-pointer text-sm"
+                >
                   Edit <MdOutlineEdit className="text-xl" />
                 </Link>
-                <button className="btn bg-surface border-danger text-accent cursor-pointer text-sm hover:bg-red-500! hover:text-white!">
+                <button
+                  type="button"
+                  onClick={() => deleteModel(_id)}
+                  className="btn bg-surface border-danger text-accent cursor-pointer text-sm hover:bg-red-500! hover:text-white!"
+                >
                   Delete
                 </button>
               </div>

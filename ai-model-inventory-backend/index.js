@@ -40,7 +40,7 @@ async function run() {
 
         //get latest 6 models
         app.get('/latest', async (req, res) => {
-            const latest = await aiModelCollection.find().sort({ created_at: -1 }).limit(6).toArray();
+            const latest = await aiModelCollection.find().sort({ created_at: 1 }).limit(6).toArray();
             res.send(latest);
         })
 
@@ -76,6 +76,8 @@ async function run() {
             );
             res.send(afterUpdate);
         })
+
+        //delete a model
 
         //get my model
         app.get('/mymodels',async (req,res)=>{
