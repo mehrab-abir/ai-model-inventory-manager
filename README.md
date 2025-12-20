@@ -2,6 +2,8 @@
 
 A full-stack web application for managing, browsing, and purchasing AI models. Users can add, update, search, filter, and track AI models with secure authentication and a modern responsive UI.  
 
+### Visit: https://aimodex.netlify.app/
+
 ## 🚀 Key Features
 
 ### 🔐 Authentication & Authorization
