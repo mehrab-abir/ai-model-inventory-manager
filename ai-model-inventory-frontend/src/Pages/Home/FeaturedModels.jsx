@@ -8,14 +8,14 @@ const FeaturedModels = () => {
   const [latestModels, setLatestModels] = useState([]);
 
   useEffect(()=>{
-    fetch("http://localhost:3000/latest")
+    fetch("https://ai-model-inventory-backend.vercel.app/latest")
     .then((res)=>res.json())
     .then((data)=>setLatestModels(data));
   },[])
 
     return (
       <div className="bg-surface pt-8">
-        <div className="w-10/12 mx-auto py-10">
+        <div className="w-11/12 md:w-10/12 mx-auto py-10">
           <div className='text-center space-y-4 mb-8'>
             <h1 className="text-secondary text-3xl font-semibold">
               Featured Models

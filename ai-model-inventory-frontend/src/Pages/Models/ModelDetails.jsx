@@ -47,7 +47,7 @@ const ModelDetails = () => {
     if (result.isConfirmed) {
       const token = await user.getIdToken();
 
-      const res = await fetch(`http://localhost:3000/allmodels/${id}`, {
+      const res = await fetch(`https://ai-model-inventory-backend.vercel.app/allmodels/${id}`, {
         method: "DELETE",
         headers: {
           authorization: `Bearer ${token}`,
@@ -70,7 +70,7 @@ const ModelDetails = () => {
   const handlePurchase = () => {
     const purchasedModel = { purchasedModelId: _id, purchasedBy: user.email };
 
-    fetch("http://localhost:3000/purchase-models", {
+    fetch("https://ai-model-inventory-backend.vercel.app/purchase-models", {
       method: "POST",
       headers: {
         "content-type": "application/json",
@@ -80,7 +80,7 @@ const ModelDetails = () => {
       .then((res) => res.json())
       .then((afterPost) => {
         if (afterPost.insertedId) {
-          fetch(`http://localhost:3000/allmodels/${_id}`, {
+          fetch(`https://ai-model-inventory-backend.vercel.app/allmodels/${_id}`, {
             method: "PATCH",
           })
             .then((res) => res.json())

@@ -26,7 +26,7 @@ const router = createBrowserRouter([
       {
         path: "/allmodels",
         Component: AllModels,
-        loader: () => fetch("http://localhost:3000/allmodels"),
+        loader: () => fetch("https://ai-model-inventory-backend.vercel.app/allmodels"),
         hydrateFallbackElement: <LoaderSpinner></LoaderSpinner>,
       },
       {
@@ -35,7 +35,7 @@ const router = createBrowserRouter([
           <ModelDetails></ModelDetails>
         </PrivateRoute>,
         loader: ({ params }) =>
-          fetch(`http://localhost:3000/allmodels/${params.id}`),
+          fetch(`https://ai-model-inventory-backend.vercel.app/allmodels/${params.id}`),
         hydrateFallbackElement: <LoaderSpinner></LoaderSpinner>,
       },
       {
@@ -50,7 +50,7 @@ const router = createBrowserRouter([
           <UpdateModel></UpdateModel>
         </PrivateRoute>,
         loader: ({ params }) =>
-          fetch(`http://localhost:3000/update-this-model/${params.id}`),
+          fetch(`https://ai-model-inventory-backend.vercel.app/update-this-model/${params.id}`),
         hydrateFallbackElement: <LoaderSpinner></LoaderSpinner>,
       },
       {

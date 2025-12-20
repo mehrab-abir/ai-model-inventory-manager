@@ -20,7 +20,7 @@ const AllModels = () => {
     }
 
     fetch(
-      `http://localhost:3000/filter-models?framework=${encodeURIComponent(
+      `https://ai-model-inventory-backend.vercel.app/filter-models?framework=${encodeURIComponent(
         framework
       )}`
     )
@@ -35,7 +35,7 @@ const AllModels = () => {
 
     const searchValue = e.target.name.value;
 
-    fetch(`http://localhost:3000/search-models?name=${encodeURIComponent(searchValue)}`)
+    fetch(`https://ai-model-inventory-backend.vercel.app/search-models?name=${encodeURIComponent(searchValue)}`)
     .then(res=>res.json())
     .then(data=>setCurrentModels(data))
     .catch(err=>console.log(err));
@@ -63,7 +63,7 @@ const AllModels = () => {
         </div>
 
         {/* search and filter */}
-        <div className="flex items-center justify-between mb-5">
+        <div className="flex flex-col-reverse md:flex-row items-center justify-between mb-5">
           <select
             name="framework"
             defaultValue=""
@@ -96,7 +96,7 @@ const AllModels = () => {
             <option>Others</option>
           </select>
 
-          <div className="">
+          <div className="mb-3">
             <form
               onSubmit={(e) => searchModels(e)}
               className="flex gap-1 items-center"

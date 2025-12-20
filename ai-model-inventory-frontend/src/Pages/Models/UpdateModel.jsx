@@ -34,7 +34,7 @@ const UpdateModel = () => {
 
     const token = await user.getIdToken();
 
-    const res = await fetch(`http://localhost:3000/update-model/${model._id}`, {
+    const res = await fetch(`https://ai-model-inventory-backend.vercel.app/update-model/${model._id}`, {
       method: "PATCH",
       headers: {
         "content-type": "application/json",

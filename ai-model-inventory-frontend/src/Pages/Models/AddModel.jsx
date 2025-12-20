@@ -25,7 +25,7 @@ const AddModel = () => {
         // console.log({name,framework,dataset,usecase, description,image,createdBy,createdAt,purchased});
         const newModel = {name,framework,dataset,useCase, description,image,createdBy,createdAt,purchased};
 
-        fetch(`http://localhost:3000/addmodel`,{
+        fetch(`https://ai-model-inventory-backend.vercel.app/addmodel`,{
             method : 'POST',
             headers : {
                 'content-type':'application/json'

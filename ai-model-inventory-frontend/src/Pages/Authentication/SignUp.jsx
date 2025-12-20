@@ -55,7 +55,7 @@ const SignUp = () => {
             password,
           };
 
-          fetch(`http://localhost:3000/users`, {
+          fetch(`https://ai-model-inventory-backend.vercel.app/users`, {
             method: "POST",
             headers: {
               "content-type": "application/json",
@@ -117,7 +117,7 @@ const SignUp = () => {
 
         navigate(location.state || "/");
 
-        fetch("http://localhost:3000/users", {
+        fetch("https://ai-model-inventory-backend.vercel.app/users", {
           method: "POST",
           headers: {
             "content-type": "application/json",

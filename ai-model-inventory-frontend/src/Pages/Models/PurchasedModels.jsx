@@ -1,42 +1,56 @@
-import React from 'react';
-import { use } from 'react';
-import { AuthContext } from '../Authentication/AuthContext';
-import { useEffect } from 'react';
-import { useState } from 'react';
-import LoaderSpinner from '../../Components/LoaderSpinner';
-import { Link } from 'react-router';
+import React from "react";
+import { use } from "react";
+import { AuthContext } from "../Authentication/AuthContext";
+import { useEffect } from "react";
+import { useState } from "react";
+import LoaderSpinner from "../../Components/LoaderSpinner";
+import { Link } from "react-router";
 
 const PurchasedModels = () => {
-    const {user,loading, setLoading} = use(AuthContext);
-    const [myPurchasedModels, setMyPurchasedModels] = useState([]);
+  const { user, loading, setLoading } = use(AuthContext);
+  const [myPurchasedModels, setMyPurchasedModels] = useState([]);
 
-    useEffect(()=>{
-        if(loading){
-            return;
-        }
-        fetch(`http://localhost:3000/purchase-models?email=${user?.email}`)
-        .then(res=>res.json())
-        .then((data)=>setMyPurchasedModels(data))
-        .catch(err=>console.log(err))
-        .finally(()=>{
-            setLoading(false);
-        })
-    },[user?.email,setLoading, loading])
+  useEffect(() => {
+    if (loading) {
+      return;
+    }
+    fetch(`https://ai-model-inventory-backend.vercel.app/purchase-models?email=${user?.email}`)
+      .then((res) => res.json())
+      .then((data) => setMyPurchasedModels(data))
+      .catch((err) => console.log(err))
+      .finally(() => {
+        setLoading(false);
+      });
+  }, [user?.email, setLoading, loading]);
 
-     if (loading) {
-       return <LoaderSpinner></LoaderSpinner>
-     }
+  if (loading) {
+    return <LoaderSpinner></LoaderSpinner>;
+  }
 
-    return (
-      <div className="bg-base pt-28 pb-10">
-        <title>Purchased Models</title>
-        <div className="w-11/12 md:w-10/12 mx-auto py-10">
-          <div className="text-center space-y-4 mb-8">
-            <h1 className="text-secondary text-3xl font-semibold">
-              My Purchased Models
-            </h1>
-          </div>
+  const noPurchasedModel = (
+    <div className="h-[50vh] flex flex-col items-center justify-center">
+      <h1 className="text-xl font-bold text-muted text-center">
+        You haven't purchased any AI models yet. Explore our collection!
+      </h1>
+      <Link to="/allmodels" className="btn btn-primary text-white mt-4">
+        Browse Models
+      </Link>
+    </div>
+  );
 
+  return (
+    <div className="bg-base pt-28 pb-10">
+      <title>Purchased Models</title>
+      <div className="w-11/12 md:w-10/12 mx-auto py-10">
+        <div className="text-center space-y-4 mb-8">
+          <h1 className="text-secondary text-3xl font-semibold">
+            My Purchased Models
+          </h1>
+        </div>
+
+        {myPurchasedModels.length === 0 ? (
+          noPurchasedModel
+        ) : (
           <div className="mt-4 space-y-3">
             {myPurchasedModels.map((model) => {
               return (
@@ -44,7 +58,7 @@ const PurchasedModels = () => {
                   key={model.purchased_model._id}
                   className="flex flex-col md:flex-row items-center justify-around gap-4 shadow-md shadow-indigo-400 bg-surface rounded-lg p-2 text-secondary text-sm text-center md:text-left"
                 >
-                  <div className='w-1/2'>
+                  <div className="w-1/2">
                     <img
                       src={model.purchased_model.image}
                       className="w-full rounded-lg"
@@ -71,9 +85,10 @@ const PurchasedModels = () => {
               );
             })}
           </div>
-        </div>
+        )}
       </div>
-    );
+    </div>
+  );
 };
 
 export default PurchasedModels;
