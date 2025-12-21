@@ -8,14 +8,13 @@ import { Bounce, toast, ToastContainer } from "react-toastify";
 import LoaderSpinner from "../../Components/LoaderSpinner";
 
 const SignIn = () => {
-  const { signin, googleSignIn, setUser, forgotPassword } =
-    use(AuthContext);
+  const { signin, googleSignIn, setUser, forgotPassword } = use(AuthContext);
   const navigate = useNavigate();
   const location = useLocation();
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
-  const [signinError, setSigninError] = useState('');
+  const [signinError, setSigninError] = useState("");
   const [resetPasswordMessage, setResetPasswordMessage] = useState("");
   const [resetPasswordError, setResetPasswordError] = useState("");
 
@@ -30,66 +29,66 @@ const SignIn = () => {
     const email = form.email.value;
     const password = form.password.value;
 
-    setSigninError('');
-    signin(email,password)
-    .then(()=>{
+    setSigninError("");
+    signin(email, password)
+      .then(() => {
         toast.success("Welcome Back!");
-        navigate(location.state || '/');
-    })
-    .catch((error)=>{
-        if (error.code === "auth/invalid-credential"){
-            setSigninError("Invalid Credential");
-        }
-        else{
-            setSigninError(error.code);
-        } 
-    })
-    .finally(()=>{
+        navigate(location.state || "/");
+      })
+      .catch((error) => {
         setIsSubmitting(false);
-    })
+        if (error.code === "auth/invalid-credential") {
+          setSigninError("Invalid Credential");
+        } else {
+          setSigninError(error.code);
+        }
+      })
+      .finally(() => {
+        setIsSubmitting(false);
+      });
   };
 
   //sign in with google
-  const signInWithGoogle = ()=>{
-
+  const signInWithGoogle = () => {
     googleSignIn()
-    .then((result)=>{
+      .then((result) => {
         const user = result.user;
         setUser(user);
-        
+
         const newUser = {
-            displayName : user.displayName,
-            email : user.email,
-            photoURL : user.photoURL
-        }
+          displayName: user.displayName,
+          email: user.email,
+          photoURL: user.photoURL,
+        };
 
-        navigate(location.state || '/');
+        navigate(location.state || "/");
 
-        fetch("https://ai-model-inventory-backend.vercel.app/users",{
-            method : 'POST',
-            headers : {
-                'content-type' : 'application/json'
-            },
-            body : JSON.stringify(newUser)
+        fetch("https://ai-model-inventory-backend.vercel.app/users", {
+          method: "POST",
+          headers: {
+            "content-type": "application/json",
+          },
+          body: JSON.stringify(newUser),
         })
-        .then((res)=>res.json())
-        .then((afterPost)=>{
-            if(afterPost.insertedId){
-                toast.success("Welcome!", {
-                  position: "top-right",
-                  autoClose: 5000,
-                  hideProgressBar: false,
-                  closeOnClick: false,
-                  pauseOnHover: true,
-                  draggable: true,
-                  progress: undefined,
-                  theme: "light",
-                  transition: Bounce,
-                });
+          .then((res) => res.json())
+          .then((afterPost) => {
+            if (afterPost.insertedId) {
+              toast.success("Welcome!", {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: false,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+                transition: Bounce,
+              });
             }
-        })
-    })
-    .catch((error)=>{
+          });
+      })
+      .catch((error) => {
+        setIsSubmitting(false);
         toast.error(`${error.code}`, {
           position: "top-right",
           autoClose: 5000,
@@ -101,38 +100,38 @@ const SignIn = () => {
           theme: "light",
           transition: Bounce,
         });
-    })
-    .finally(()=>{
-
-    })
-  }
+      })
+      .finally(() => {
+        setIsSubmitting(false);
+      });
+  };
 
   //forgot password modal
-  const openModal = ()=>{
+  const openModal = () => {
     modalRef.current.show();
-  }
+  };
 
-  const resetPassword = ()=>{
-    setResetPasswordError('')
+  const resetPassword = () => {
+    setResetPasswordError("");
     setResetPasswordMessage("");
 
     const email = emailRef.current.value;
     forgotPassword(email)
-    .then(()=>{
+      .then(() => {
         setResetPasswordMessage(
           "If an account exists with this email, password reset link has been sent. Please check your email, including spam"
         );
-    })
-    .catch((err)=>{
+      })
+      .catch((err) => {
         setResetPasswordError(err.code);
-    })
-    .finally(()=>{
+      })
+      .finally(() => {
         setIsSubmitting(false);
-    })
-  }
+      });
+  };
 
-  if(isSubmitting){
-    return <LoaderSpinner></LoaderSpinner>
+  if (isSubmitting) {
+    return <LoaderSpinner></LoaderSpinner>;
   }
 
   return (
@@ -207,10 +206,7 @@ const SignIn = () => {
         </form>
 
         {/* reset password modal */}
-        <dialog
-          ref={modalRef}
-          className="bg-surface modal modal-middle"
-        >
+        <dialog ref={modalRef} className="bg-surface modal modal-middle">
           <div className="modal-box">
             <h3 className="font-bold text-lg">
               Enter the email associated with your account

@@ -39,6 +39,7 @@ const SignUp = () => {
       setPasswordFormatError(
         "Password must be at least 6 characters long and include at least one uppercase letter and one lowercase letter."
       );
+      setIsSubmitting(false);
       return;
     }
 
@@ -82,6 +83,7 @@ const SignUp = () => {
         });
       })
       .catch((signupError) => {
+        setIsSubmitting(false);
         toast.error(`${signupError.code}`, {
           position: "top-right",
           autoClose: 5000,
@@ -153,7 +155,7 @@ const SignUp = () => {
         });
       })
       .finally(() => {
-
+        setIsSubmitting(false);
       });
   };
 
