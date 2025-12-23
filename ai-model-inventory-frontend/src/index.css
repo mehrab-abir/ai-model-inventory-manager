@@ -18,45 +18,42 @@ body {
 /* Light mode */
 [data-theme="light"] {
   /* ---------- Backgrounds ---------- */
-  .bg-base { background-color: #efefef; }        /* Soft off-white */
-  .bg-surface { background-color: #FFFFFF; }     /* Pure white */
-  .bg-primary { background-color: #3d32b7; }     /* Deep Indigo (softer, pro) */
-  .bg-hover { background-color: #292578; } /* Indigo (hover) */
-  .bg-secondary { background-color: #F2F3F8;}   /* Very light indigo-gray */
-  .bg-muted { background-color: #F3F4F6; }       /* Light gray */
-  .bg-accent { background-color: #e0e8ff; }  /* Light indigo tint */
+  .bg-base { background-color: #efefef; }    
+  .bg-surface { background-color: #FFFFFF; }     
+  .bg-primary { background-color: #3d32b7; }     /* Deep Indigo */
+  .bg-hover { background-color: #292578; } 
+  .bg-secondary { background-color: #F2F3F8;}   
+  .bg-muted { background-color: #F3F4F6; }       
+  .bg-accent { background-color: #e0e8ff; }  
   .bg-footer{background-color: #cfd0d1 ;}     
 
-  .bg-info { background-color: #0EA5E9; }        /* Sky blue (info/highlight) */
-  .bg-danger { background-color: #EF4444; }      /* Red */
+  .bg-info { background-color: #0EA5E9; }        
+  .bg-danger { background-color: #EF4444; }      
 
   /* ---------- Text ---------- */
-  .text-base { color: #111111; }                 /* Near black */
+  .text-base { color: #111111; }                 
   .text-primary { color: #4338CA; }              /* Deep Indigo */
-  .text-secondary { color: #030213; }            /* Very dark blue-black */
-  .text-muted { color: #6B7280; }                /* Medium gray */
-  .text-accent { color: #030213; }               /* Very dark blue-black */
-  .text-white { color: #FFFFFF; }                /* White */
+  .text-secondary { color: #030213; }            
+  .text-muted { color: #6B7280; }                
+  .text-accent { color: #030213; }              
+  .text-white { color: #FFFFFF; }             
 
-  .text-info { color: #0EA5E9; }                 /* Sky blue */
-  .text-danger { color: #EF4444; }               /* Red */
+  .text-info { color: #0EA5E9; }                 
+  .text-danger { color: #EF4444; }          
 
-  .text-primary-foreground { color: #FFFFFF; }   /* White */
-  .text-danger-foreground { color: #FFFFFF; }    /* White */
-  .text-info-foreground { color: #FFFFFF; }      /* White */
+  .text-primary-foreground { color: #FFFFFF; }
+  .text-danger-foreground { color: #FFFFFF; } 
+  .text-info-foreground { color: #FFFFFF; }   
 
   /* ---------- Borders ---------- */
-  .border-base { border-color: #0000001F; }      /* Black (12% opacity) - clearer */
+  .border-base { border-color: #0000001F; }      
   .border-primary { border-color: #3d32b7; }     /* Deep Indigo */
-  .border-info { border-color: #0EA5E9; }        /* Sky blue */
-  .border-danger { border-color: #EF4444; }      /* Red */
+  .border-info { border-color: #0EA5E9; }        
+  .border-danger { border-color: #EF4444; }      
 
   /* ---------- Inputs ---------- */
-  .border-input { border-color: #0000001F; }     /* Black (12% opacity) */
-
-  /* ---------- Focus & Rings ---------- */
-  .ring-primary { box-shadow: 0 0 0 3px #4F46E533; } /* Indigo (20% opacity) */
-  .outline-primary { outline: 2px solid #4F46E5; outline-offset: 2px; } /* Indigo focus */
+  .border-input { border-color: #0000001F; }     
+  .outline-primary { outline: 2px solid #4F46E5; outline-offset: 2px; }
 }
 
 
@@ -66,34 +63,29 @@ body {
   .bg-base { background-color: #0F172A; }         /* Deep navy */
   .bg-surface { background-color: #1E293B; }      /* Slate */
   .bg-primary { background-color: #5254d0; }      /* Bright indigo */
-  .bg-primary-hover { background-color: #818CF8; } /* Lighter indigo (hover) */
   .bg-secondary { background-color: #334155; }    /* Medium slate */
   .bg-muted { background-color: #1E293B; }        /* Slate */
   .bg-accent { background-color: #334155; }       /* Medium slate */
-  .bg-info { background-color: #0EA5E9; }         /* Sky blue (info/highlight) */
-  .bg-danger { background-color: #EF4444; }       /* Red */
+  .bg-info { background-color: #0EA5E9; }         
+  .bg-danger { background-color: #EF4444; }       
   .bg-footer{background-color: #1E293B ;} 
 
   /* ---------- Text ---------- */
-  .text-base { color: #F1F5F9; }                  /* Light blue-gray */
-  .text-primary { color: #6366F1; }               /* Bright indigo */
-  .text-secondary { color: #F1F5F9; }             /* Light blue-gray */
-  .text-muted { color: #94A3B8; }                 /* Soft gray-blue */
-  .text-accent { color: #F1F5F9; }                /* Light blue-gray */
-  .text-white { color: #FFFFFF; }                 /* White */
+  .text-base { color: #F1F5F9; }                  
+  .text-primary { color: #6366F1; }             
+  .text-secondary { color: #F1F5F9; }             
+  .text-muted { color: #94A3B8; }                 
+  .text-accent { color: #F1F5F9; }                
+  .text-white { color: #FFFFFF; }                
 
-  .text-info { color: #38BDF8; }                  /* Lighter sky blue (readable on dark) */
-  .text-danger { color: #EF4444; }                /* Red */
-
-  .text-primary-foreground { color: #FFFFFF; }    /* White */
-  .text-danger-foreground { color: #FFFFFF; }     /* White */
-  .text-info-foreground { color: #001018; }       /* Very dark cyan-black */
+  .text-info { color: #38BDF8; }                 
+  .text-danger { color: #EF4444; }              
 
   /* ---------- Borders ---------- */
-  .border-base { border-color: #FFFFFF26; }       /* White (15% opacity) - clearer */
-  .border-primary { border-color: #6366F1; }      /* Bright indigo */
-  .border-info { border-color: #0EA5E9; }         /* Sky blue */
-  .border-danger { border-color: #EF4444; }       /* Red */
+  .border-base { border-color: #FFFFFF26; }       
+  .border-primary { border-color: #6366F1; }      
+  .border-info { border-color: #0EA5E9; }         
+  .border-danger { border-color: #EF4444; }       
 
   /* ---------- Inputs ---------- */
   .border-input { border-color: #334155; }        /* Medium slate */

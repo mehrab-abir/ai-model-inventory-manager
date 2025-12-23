@@ -1,6 +1,7 @@
 import React from "react";
 import { useEffect } from "react";
 import { use } from "react";
+import modelImg from "./../../assets/model.jpg";
 import { AuthContext } from "../Authentication/AuthContext";
 import { useState } from "react";
 import LoaderSpinner from "../../Components/LoaderSpinner";
@@ -49,10 +50,11 @@ const MyModels = () => {
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {myModels.map((model) => {
+              const model_img = model.image || modelImg;
               return (
-                <div className="relative shadow-sm shadow-[#4338CA20] hover:shadow-2xl rounded-lg overflow-hidden">
+                <div key={model._id} className="relative shadow-sm shadow-[#4338CA20] hover:shadow-2xl rounded-lg overflow-hidden">
                   <img
-                    src={model.image}
+                    src={model_img}
                     alt=""
                     className="w-full object-cover h-52 hover:scale-105 cursor-pointer transition-transform duration-300"
                   />

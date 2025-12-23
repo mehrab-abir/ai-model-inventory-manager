@@ -189,10 +189,19 @@ async function run() {
 
         //search models by name
         app.get('/search-models',async (req,res)=>{
-            const {name} = req.query;
-            const result = await aiModelCollection.find({name: {$regex: name, $options : 'i'}}).toArray();
+            const name = (req.query.name ?? '').trim();
+
+            if (!name) {
+                const allModels = await aiModelCollection.find().toArray();
+                return res.send(allModels);
+            }
+
+            const result = await aiModelCollection
+                .find({ name: { $regex: name, $options: 'i' } })
+                .toArray();
+
             res.send(result);
-        })
+        });
 
         app.post('/users', async (req, res) => {
             const newUser = req.body;

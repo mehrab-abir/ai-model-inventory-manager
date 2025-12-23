@@ -124,13 +124,19 @@ const Header = () => {
               {/* user dropdown */}
               <div
                 className={`min-w-52 bg-surface p-2 absolute top-20 right-2 shadow-md shadow-indigo-400 flex flex-col space-y-4 rounded-lg ${
-                  showDropdown ? "opacity-100 mt-0" : "opacity-0 mt-5"
+                  showDropdown
+                    ? "opacity-100 mt-0 pointer-events-auto"
+                    : "opacity-0 mt-5 pointer-events-none"
                 } transition-all duration-500`}
               >
                 <p>{user.displayName}</p>
                 <p className="text-sm text-muted -mt-4">{user.email}</p>
-                <Link to="/mymodels" className="hover:underline">My Models</Link>
-                <Link to="/purchased-models" className="hover:underline">My Purchase</Link>
+                <Link to="/mymodels" className="hover:underline">
+                  My Models
+                </Link>
+                <Link to="/purchased-models" className="hover:underline">
+                  My Purchase
+                </Link>
                 <button
                   onClick={() => handleSignOut()}
                   className="btn p-1 text-sm md:p-2 bg-surface border-danger cursor-pointer hover:bg-red-500! hover:text-white! rounded-xl"
@@ -190,13 +196,25 @@ const Header = () => {
           className="text-4xl absolute top-10 right-10 cursor-pointer text-gray-400"
         />
         <nav className="flex flex-col items-center mt-20 space-y-3">
-          <NavLink to="/" onClick={() => setOpenMenu(!openMenu)} className="text-lg">
+          <NavLink
+            to="/"
+            onClick={() => setOpenMenu(!openMenu)}
+            className="text-lg"
+          >
             Home
           </NavLink>
-          <NavLink to="/allmodels" onClick={() => setOpenMenu(!openMenu)} className="text-lg">
+          <NavLink
+            to="/allmodels"
+            onClick={() => setOpenMenu(!openMenu)}
+            className="text-lg"
+          >
             All Models
           </NavLink>
-          <NavLink to="/addmodel" onClick={() => setOpenMenu(!openMenu)} className="text-lg">
+          <NavLink
+            to="/addmodel"
+            onClick={() => setOpenMenu(!openMenu)}
+            className="text-lg"
+          >
             Add a Model
           </NavLink>
         </nav>

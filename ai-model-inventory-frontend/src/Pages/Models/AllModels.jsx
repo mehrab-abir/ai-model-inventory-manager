@@ -35,6 +35,8 @@ const AllModels = () => {
 
     const searchValue = e.target.name.value;
 
+    // console.log(searchValue);
+
     fetch(`https://ai-model-inventory-backend.vercel.app/search-models?name=${encodeURIComponent(searchValue)}`)
     .then(res=>res.json())
     .then(data=>setCurrentModels(data))
