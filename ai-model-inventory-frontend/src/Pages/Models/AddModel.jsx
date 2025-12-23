@@ -122,6 +122,7 @@ const AddModel = () => {
                 <option>Computer Vision</option>
                 <option>Generative AI</option>
                 <option>Speech Recognition</option>
+                <option>Machine Learning</option>
                 <option>Recommendation System</option>
                 <option>Time Series</option>
                 <option>Image Generation</option>
@@ -163,7 +164,6 @@ const AddModel = () => {
               name="image"
               className="input border-input focus:outline-primary w-full"
               placeholder="https://www.example.com/model-img.jpg"
-              required
             />
             <span className="text-sm text-muted mt-2">
               Provide a URL to an image representing your model (diagram,

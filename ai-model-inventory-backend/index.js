@@ -39,6 +39,7 @@ const verifyFirebaseToken = async (req,res,next)=>{
     }
 }
 
+//root
 app.get('/', (req, res) => {
     res.send("'AI Inventory Manager' Server is running");
 })
@@ -70,7 +71,7 @@ async function run() {
 
         //get latest 6 models
         app.get('/latest', async (req, res) => {
-            const latest = await aiModelCollection.find().sort({ created_at: 1 }).limit(6).toArray();
+            const latest = await aiModelCollection.find().sort({ createdAt: 1 }).limit(6).toArray();
             res.send(latest);
         })
 

@@ -3,6 +3,7 @@ import { Link, useLoaderData, useNavigate } from "react-router";
 import { SiFramework } from "react-icons/si";
 import { IoMdTrendingUp } from "react-icons/io";
 import { BiSolidPurchaseTag } from "react-icons/bi";
+import modelImg from "./../../assets/model.jpg";
 import { GoDatabase } from "react-icons/go";
 import { SlCalender } from "react-icons/sl";
 import { LuShoppingBag } from "react-icons/lu";
@@ -104,6 +105,9 @@ const ModelDetails = () => {
         });
       });
   };
+
+  const model_img = image || modelImg;
+
   return (
     <div className="bg-secondary pt-28 pb-10">
       <div className="w-10/12 mx-auto">
@@ -114,9 +118,9 @@ const ModelDetails = () => {
         <div className="flex flex-col lg:flex-row gap-6 mt-2">
           <div className="lg:w-[70%] justify-self-stretch">
             <img
-              src={image}
+              src={model_img}
               alt=""
-              className="rounded-lg object-cover shadow-lg"
+              className="rounded-lg object-cover shadow-lg mx-auto"
             />
             {user?.email === createdBy ? (
               <div className="flex gap-4 mt-2">

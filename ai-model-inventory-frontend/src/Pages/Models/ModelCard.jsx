@@ -1,13 +1,15 @@
 import React from 'react';
 import { Link } from 'react-router';
-// import sampleImg from './../../assets/sample-img.png'
+import modelImg from "./../../assets/model.jpg";
 
 const ModelCard = ({model}) => {
   const {_id,name, framework, image, description, useCase} = model;
+
+  const model_img = image || modelImg;
     return (
       <div className="overflow-hidden relative shadow-sm shadow-[#4338CA20] hover:scale-102 hover:shadow-2xl transition-all duration-300 rounded-lg">
         <img
-          src={image}
+          src={model_img}
           alt=""
           className="w-full object-cover h-52 hover:scale-105 cursor-pointer transition-transform duration-300"
         />
