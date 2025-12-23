@@ -68,7 +68,7 @@ body {
   .bg-accent { background-color: #334155; }       /* Medium slate */
   .bg-info { background-color: #0EA5E9; }         
   .bg-danger { background-color: #EF4444; }       
-  .bg-footer{background-color: #1E293B ;} 
+  .bg-footer{background-color: #1b222c ;} 
 
   /* ---------- Text ---------- */
   .text-base { color: #F1F5F9; }                  
