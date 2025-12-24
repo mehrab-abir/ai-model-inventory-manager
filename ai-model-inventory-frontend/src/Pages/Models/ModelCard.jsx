@@ -3,7 +3,7 @@ import { Link } from 'react-router';
 import modelImg from "./../../assets/model.jpg";
 
 const ModelCard = ({model}) => {
-  const {_id,name, framework, image, description, useCase} = model;
+  const {_id,name, framework, image, description, useCase, ratingAvg} = model;
 
   const model_img = image || modelImg;
     return (
@@ -27,7 +27,7 @@ const ModelCard = ({model}) => {
           )}...`}</p>
 
           <div className="flex items-center justify-between mt-2">
-            <span className="text-sm">4.3</span>
+            <span className="text-sm bg-indigo-200 text-primary px-2 rounded-full">{ratingAvg}</span>
             <span className="bg-secondary p-1 rounded-full text-sm!">
               {useCase}
             </span>

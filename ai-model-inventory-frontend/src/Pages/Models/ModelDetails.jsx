@@ -7,18 +7,25 @@ import modelImg from "./../../assets/model.jpg";
 import { GoDatabase } from "react-icons/go";
 import { SlCalender } from "react-icons/sl";
 import { LuShoppingBag } from "react-icons/lu";
-import { CiStar } from "react-icons/ci";
+import { IoIosStarOutline } from "react-icons/io";
+import { IoIosStar } from "react-icons/io";
+import { IoStarHalfOutline } from "react-icons/io5";
 import { MdOutlineEdit } from "react-icons/md";
 import { use } from "react";
 import { AuthContext } from "../Authentication/AuthContext";
 import Swal from "sweetalert2";
 import { useState } from "react";
+// import { useEffect } from "react";
 
 const ModelDetails = () => {
   const { user } = use(AuthContext);
   const navigate = useNavigate();
 
   const model = useLoaderData();
+
+  const [value, setValue] = useState(0);
+  const [hover, setHover] = useState(0);
+
   const {
     _id,
     name,
@@ -30,7 +37,17 @@ const ModelDetails = () => {
     createdBy,
     createdAt,
     purchased,
+    ratingAvg,
   } = model;
+
+  // const currentUserRating =
+  //   JSON.parse(localStorage.getItem("user rating")).modelId === _id
+  //     ? JSON.parse(localStorage.getItem("user rating")).rating
+  //     : "N/A";
+
+  // const [userRating, setUserRating] = useState(currentUserRating);
+
+  // console.log(currentUserRating);
 
   const [purchasedCount, setPurchasedCount] = useState(purchased);
 
@@ -48,12 +65,15 @@ const ModelDetails = () => {
     if (result.isConfirmed) {
       const token = await user.getIdToken();
 
-      const res = await fetch(`https://ai-model-inventory-backend.vercel.app/allmodels/${id}`, {
-        method: "DELETE",
-        headers: {
-          authorization: `Bearer ${token}`,
-        },
-      });
+      const res = await fetch(
+        `https://ai-model-inventory-backend.vercel.app/allmodels/${id}`,
+        {
+          method: "DELETE",
+          headers: {
+            authorization: `Bearer ${token}`,
+          },
+        }
+      );
 
       const afterDelete = await res.json();
 
@@ -81,9 +101,12 @@ const ModelDetails = () => {
       .then((res) => res.json())
       .then((afterPost) => {
         if (afterPost.insertedId) {
-          fetch(`https://ai-model-inventory-backend.vercel.app/allmodels/${_id}`, {
-            method: "PATCH",
-          })
+          fetch(
+            `https://ai-model-inventory-backend.vercel.app/allmodels/${_id}`,
+            {
+              method: "PATCH",
+            }
+          )
             .then((res) => res.json())
             .then((afterUpdate) => {
               if (afterUpdate.modifiedCount) {
@@ -107,6 +130,55 @@ const ModelDetails = () => {
   };
 
   const model_img = image || modelImg;
+
+  /* useEffect(() => {
+    // console.log(JSON.parse(localStorage.getItem("user rating")));
+    const userRatingObj = {
+      modelId: _id,
+      rating: userRating,
+    };
+    localStorage.setItem("user rating", JSON.stringify(userRatingObj));
+  }, [userRating, _id]); */
+
+  //submit user rating
+  const submit = () => {
+    // console.log("rate : ", value);
+
+    const newRating = {
+      userEmail: user.email,
+      ratingValue: value,
+    };
+
+    // setUserRating(value);
+
+    fetch(
+      `https://ai-model-inventory-backend.vercel.app/modeldetails/ratings/${_id}`,
+      {
+        method: "PATCH",
+        headers: {
+          "content-type": "application/json",
+        },
+        body: JSON.stringify(newRating),
+      }
+    )
+      .then((res) => res.json())
+      .then((afterUpdate) => {
+        if (afterUpdate.reCalculated.acknowledged) {
+          Swal.fire({
+            title: "Thank you for rating!",
+            icon: "success",
+            theme: "auto",
+          });
+        }
+      })
+      .catch(() => {
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: `Something went wrong!`,
+        });
+      });
+  };
 
   return (
     <div className="bg-secondary pt-28 pb-10">
@@ -152,7 +224,7 @@ const ModelDetails = () => {
               <span className="text-lg font-semibold">Details</span>
               <div className="space-y-4 mt-5">
                 <div className="flex gap-4 items-center">
-                  <SiFramework />
+                  <SiFramework className="" />
                   <div className="flex flex-col">
                     <span className="text-muted">Framework</span>
                     <span>{framework}</span>
@@ -160,7 +232,7 @@ const ModelDetails = () => {
                 </div>
 
                 <div className="flex gap-4 items-center">
-                  <IoMdTrendingUp />
+                  <IoMdTrendingUp className="" />
                   <div className="flex flex-col">
                     <span className="text-muted">Usecase</span>
                     <span>{useCase}</span>
@@ -168,7 +240,7 @@ const ModelDetails = () => {
                 </div>
 
                 <div className="flex gap-4 items-center">
-                  <GoDatabase />
+                  <GoDatabase className="" />
                   <div className="flex flex-col">
                     <span className="text-muted">Dataset</span>
                     <span>{dataset}</span>
@@ -176,7 +248,7 @@ const ModelDetails = () => {
                 </div>
 
                 <div className="flex gap-4 items-center">
-                  <BiSolidPurchaseTag />
+                  <BiSolidPurchaseTag className="" />
                   <div className="flex flex-col">
                     <span className="text-muted">Purchased</span>
                     <span>{purchasedCount} times</span>
@@ -184,7 +256,15 @@ const ModelDetails = () => {
                 </div>
 
                 <div className="flex gap-4 items-center">
-                  <SlCalender />
+                  <IoStarHalfOutline className="text-xl" />
+                  <div className="flex flex-col">
+                    <span className="text-muted">Average Rating</span>
+                    <span>{ratingAvg}</span>
+                  </div>
+                </div>
+
+                <div className="flex gap-4 items-center">
+                  <SlCalender className="" />
                   <div className="flex flex-col">
                     <span className="text-muted">Created at</span>
                     <span>{new Date(createdAt).toDateString()}</span>
@@ -202,10 +282,45 @@ const ModelDetails = () => {
             </button>
           </div>
         </div>
-        {/* <div className="w-full lg:w-[70%] bg-surface mt-5 rounded-lg shadow-md p-4 border border-gray-200">
-          <h3 className="text-lg font-semibold mb-6">Rate this Model</h3>
-          <CiStar className="text-xl" />
-        </div> */}
+        <div className="w-full lg:w-[70%] bg-surface mt-5 rounded-lg shadow-md p-4 border border-gray-200">
+          <h3 className="text-lg font-semibold mb-3">Rate this Model</h3>
+
+          {[1, 2, 3, 4, 5].map((star) => {
+            return (
+              <button
+                key={star}
+                onMouseEnter={() => setHover(star)}
+                onMouseLeave={() => setHover(0)}
+                onClick={() => setValue(star)}
+                aria-label={`${star} star`}
+                className="cursor-pointer mr-1 text-indigo-700"
+              >
+                {(hover || value) >= star ? (
+                  <IoIosStar className="text-2xl" />
+                ) : (
+                  <IoIosStarOutline className="text-2xl" />
+                )}
+              </button>
+            );
+          })}
+
+          {/* {JSON.parse(localStorage.getItem("user rating").modelId === _id) ? (
+            <p className="mt-2">
+              <span className="text-accent">
+                {JSON.parse(localStorage.getItem("user rating").rating)}
+              </span>
+            </p>
+          ) : (
+            ""
+          )} */}
+
+          <button
+            onClick={submit}
+            className="bg-primary text-sm cursor-pointer text-white block mt-2 px-3 py-2 rounded-lg hover:shadow-lg hover:shadow-indigo-400!"
+          >
+            Submit
+          </button>
+        </div>
       </div>
     </div>
   );

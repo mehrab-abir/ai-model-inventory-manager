@@ -65,13 +65,13 @@ async function run() {
 
         //get all models
         app.get('/allmodels', async (req, res) => {
-            const allmodels = await aiModelCollection.find().toArray();
+            const allmodels = await aiModelCollection.find().sort({createdAt: -1}).toArray();
             res.send(allmodels);
         })
 
         //get latest 6 models
         app.get('/latest', async (req, res) => {
-            const latest = await aiModelCollection.find().sort({ createdAt: 1 }).limit(6).toArray();
+            const latest = await aiModelCollection.find().sort({ createdAt: -1 }).limit(6).toArray();
             res.send(latest);
         })
 
@@ -177,6 +177,45 @@ async function run() {
         res.send(afterIncrement);
         })
 
+        //rating
+        app.patch('/modeldetails/ratings/:id',async (req,res)=>{
+            const id = req.params;
+            const ratingValue = req.body.ratingValue;
+            const userEmail = req.body.userEmail;
+
+            if(ratingValue === 0){
+                return res.send({message: "Nothing posted"});
+            }
+
+            // console.log(id, ratingValue, userEmail);
+
+            const newRating = {userEmail, rating: ratingValue};
+
+            const updated = await aiModelCollection.updateOne({_id:new ObjectId(id), "ratings.userEmail" : userEmail},{
+                $set : {"ratings.$.rating": ratingValue}
+            });
+
+            if(updated.matchedCount === 0){
+                await aiModelCollection.updateOne({ _id: new ObjectId(id) }, {
+                    $push: { ratings: newRating }
+                });
+            }
+            
+            const reCalculated = await aiModelCollection.updateOne({_id:new ObjectId(id)},[
+                {
+                    $set : {
+                        "ratingCount" : { $size : "$ratings"},
+                        "ratingAvg" : { $avg : "$ratings.rating"}
+                    }
+                }
+            ]);
+
+            res.send({
+                message : "Rating saved and stats updated",
+                updated: updated.matchedCount === 1, reCalculated
+            });
+        })
+
         //filter models by framework
         app.get('/filter-models',async (req,res)=>{
             const { framework } = req.query;
@@ -215,6 +254,27 @@ async function run() {
                 res.send(afterPost);
             }
         })
+
+
+        //one time route, to update all docs with 3 new fields
+        /* app.patch('/__init-model-ratings',async (req,res)=>{
+            try{
+                const result = await aiModelCollection.updateMany({},
+                    {
+                        $set : {
+                            "ratings": [],
+                            "ratingCount": 0,
+                            "ratingAvg": 0
+                        },
+                    }
+                );
+
+                res.send(result)
+            }
+            catch(error){
+                res.status(500).send({message: "Migration failed",error});
+            }
+        }) */
 
         // await client.db("admin").command({ ping: 1 });
         // console.log("Pinged your deployment. You successfully connected to MongoDB!");
