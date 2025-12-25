@@ -180,8 +180,8 @@ async function run() {
 
         //rating
         app.patch('/modeldetails/ratings/:id',async (req,res)=>{
-            const id = req.params;
-            const ratingValue = req.body.ratingValue;
+            const {id} = req.params;
+            const ratingValue = Number(req.body.ratingValue);
             const userEmail = req.body.userEmail;
 
             if(ratingValue === 0){
