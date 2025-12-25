@@ -4,6 +4,7 @@ const admin = require("firebase-admin");
 require('dotenv').config()
 const cors = require('cors');
 const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
+const e = require('express');
 const port = process.env.PORT || 3000;
 
 const decoded = Buffer.from(process.env.FIREBASE_SERVICE_KEY, "base64").toString("utf8");
@@ -210,8 +211,16 @@ async function run() {
                 }
             ]);
 
+            //get the updated ratingAvg
+            const avgRating = await aiModelCollection.findOne({_id: new ObjectId(id)},{
+                projection : {ratingAvg : 1}
+            });
+
+            // console.log(avgRating);
+
             res.send({
                 message : "Rating saved and stats updated",
+                ratingAvg : avgRating.ratingAvg,
                 updated: updated.matchedCount === 1, reCalculated
             });
         })
@@ -242,17 +251,57 @@ async function run() {
             res.send(result);
         });
 
+        //post user to db
         app.post('/users', async (req, res) => {
             const newUser = req.body;
             const userExist = await userCollection.findOne({ email: req.body.email });
 
             if (userExist) {
-                res.send({ message: "User already exists. Not posted." });
+                return res.send({ message: "User already exists. Not posted." });
             }
             else {
                 const afterPost = await userCollection.insertOne(newUser);
                 res.send(afterPost);
             }
+        })
+
+        //get current user
+        app.get('/getuser',async (req,res)=>{
+            const {email} = req.query;
+
+            if(!email){
+                return res.status(400).json({ message: "Email required" });
+            }
+            
+            const result = await userCollection.findOne({email: email});
+
+            if(!result){
+                return res.status(404).send({message: "User not found"});
+            }
+
+            res.send(result);
+        })
+
+        //update user
+        app.patch('/updateprofile',async (req,res)=>{
+            const email = req.query.email;
+            const { displayName, photoURL } = req.body;
+
+            const updateDoc = {
+                displayName,
+            };
+
+            // only update photoURL if it exists
+            if (photoURL) {
+                updateDoc.photoURL = photoURL;
+            }
+
+            const result = await userCollection.updateOne(
+                { email },
+                { $set: updateDoc }
+            );
+
+            res.send(result);
         })
 
 

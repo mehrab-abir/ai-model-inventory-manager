@@ -1,66 +1,107 @@
 import React from "react";
 import { use } from "react";
 import { AuthContext } from "../Authentication/AuthContext";
-import Swal from 'sweetalert2'
+import Swal from "sweetalert2";
 import { useNavigate } from "react-router";
+import { uploadToCloudinary } from "../../utils/photoUploader";
+import { useState } from "react";
+import LoaderSpinner from "../../Components/LoaderSpinner";
 
 const AddModel = () => {
-    const {user} = use(AuthContext);
-    const navigate = useNavigate();
+  const { user } = use(AuthContext);
+  const navigate = useNavigate();
 
-    const handleAddModel = (e) =>{
-        e.preventDefault();
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-        const form = e.target;
-        const name = form.name.value;
-        const framework = form.framework.value;
-        const useCase = form.usecase.value;
-        const dataset = form.dataset.value;
-        const image = form.image.value;
-        const description = form.description.value;
-        const createdBy = user.email;
-        const createdAt = new Date();
-        const purchased = 0;
+  const handleAddModel = async (e) => {
+    setIsSubmitting(true);
 
-        // console.log({name,framework,dataset,usecase, description,image,createdBy,createdAt,purchased});
-        const newModel = {name,framework,dataset,useCase, description,image,createdBy,createdAt,purchased};
+    e.preventDefault();
 
-        fetch(`https://ai-model-inventory-backend.vercel.app/addmodel`,{
-            method : 'POST',
-            headers : {
-                'content-type':'application/json'
-            },
-            body : JSON.stringify(newModel)
-        })
-        .then((res)=>res.json())
-        .then((afterPost)=>{
-            if(afterPost.insertedId){
-                Swal.fire({
-                  title: "Model Posted!",
-                  icon: "success",
-                  theme : 'auto'
-                });
-            }
-            navigate('/allmodels');
-        })
-        .catch(()=>{
-            Swal.fire({
-              icon: "error",
-              title: "Oops...",
-              text: `Something went wrong!`,
-            });
-        })
-        form.reset();
+    const form = e.target;
+    const name = form.name.value;
+    const framework = form.framework.value;
+    const useCase = form.usecase.value;
+    const dataset = form.dataset.value;
+    const imageFile = form.model_img?.files?.[0];
+    const description = form.description.value;
+    const ratingAvg = 0;
+    const ratingCount = 0;
+    const ratings = [];
+    const createdBy = user.email;
+    const creator_name = user.displayName;
+    const createdAt = new Date();
+    const purchased = 0;
+
+    try {
+      const image = imageFile
+        ? await uploadToCloudinary(
+            imageFile,
+            import.meta.env.VITE_CLOUDINARY_MODEL_PRESET
+          )
+        : "";
+
+      const newModel = {
+        name,
+        framework,
+        dataset,
+        useCase,
+        description,
+        image,
+        createdBy,
+        createdAt,
+        creator_name,
+        ratingAvg,
+        ratingCount,
+        ratings,
+        purchased,
+      };
+
+      const res = await fetch(
+        `https://ai-model-inventory-backend.vercel.app/addmodel`,
+        {
+          method: "POST",
+          headers: {
+            "content-type": "application/json",
+          },
+          body: JSON.stringify(newModel),
+        }
+      );
+
+      const afterPost = await res.json();
+
+      if (afterPost.insertedId) {
+        Swal.fire({
+          title: "Model Posted!",
+          icon: "success",
+          theme: "auto",
+        });
+        navigate("/allmodels");
+      }
+    } catch {
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: `Something went wrong!`,
+      });
+    } finally {
+      form.reset();
+      setIsSubmitting(false);
     }
+  };
+
+  if(isSubmitting){
+    return <LoaderSpinner></LoaderSpinner>
+  }
 
   return (
     <div className="bg-base pt-32 pb-10">
-        <title>Add a Model</title>
+      <title>Add a Model</title>
       <div className="w-11/12 md:w-10/12 mx-auto bg-surface rounded-lg p-6 text-secondary">
         <h1 className="text-3xl font-bold mb-2">Add New AI Model</h1>
         <p className="text-muted">Share your AI Model with the community</p>
 
-        <form onSubmit={(e)=>handleAddModel(e)} className="mt-10 space-y-4">
+        <form onSubmit={(e) => handleAddModel(e)} className="mt-10 space-y-4">
           <div className="flex flex-col">
             <label className="fotn-semibold">Model Name</label>
             <input
@@ -158,20 +199,22 @@ const AddModel = () => {
           </div>
 
           <div className="flex flex-col">
-            <label className="fotn-semibold">Image URL</label>
+            <label className="fotn-semibold">Image</label>
             <input
-              type="text"
-              name="image"
-              className="input border-input focus:outline-primary w-full"
-              placeholder="https://www.example.com/model-img.jpg"
+              type="file"
+              name="model_img"
+              accept="image/*"
+              className="file-input file-input-bordered w-full"
+              required
             />
-            <span className="text-sm text-muted mt-2">
-              Provide a URL to an image representing your model (diagram,
-              screenshot, etc.)
-            </span>
           </div>
 
-          <button type="submit" className="btn bg-primary text-white cursor-pointer w-full md:w-auto">Add Model</button>
+          <button
+            type="submit"
+            className="btn bg-primary text-white cursor-pointer w-full md:w-auto"
+          >
+            Add Model
+          </button>
         </form>
       </div>
     </div>

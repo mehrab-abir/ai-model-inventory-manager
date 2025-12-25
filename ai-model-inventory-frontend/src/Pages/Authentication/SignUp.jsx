@@ -6,32 +6,29 @@ import { FaEyeSlash } from "react-icons/fa6";
 import { AuthContext } from "./AuthContext";
 import { Bounce, ToastContainer, toast } from "react-toastify";
 import LoaderSpinner from "../../Components/LoaderSpinner";
+import { uploadToCloudinary } from "../../utils/photoUploader";
 
 const SignUp = () => {
-  const {
-    setUser,
-    googleSignIn,
-    createAccount,
-    updateUser,
-  } = use(AuthContext);
+  const { setUser, googleSignIn, createAccount, updateUser } = use(AuthContext);
 
   const navigate = useNavigate();
   const location = useLocation();
 
   const [isSubmitting, setIsSubmitting] = useState(false);
-
   const [showPassword, setShowPassword] = useState(false);
   const [passwordFormatError, setPasswordFormatError] = useState("");
 
-  const handleFormSubmit = (e) => {
+  const handleFormSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
 
     const form = e.target;
     const displayName = form.name.value;
     const email = form.email.value;
-    const photoURL = form.photoURL.value;
     const password = form.password.value;
+
+    // file input (may be empty)
+    const imageFile = form.avatar?.files?.[0] || null;
 
     setPasswordFormatError("");
     const regex = /^(?=.*[A-Z])(?=.*[a-z]).{6,}$/;
@@ -43,67 +40,63 @@ const SignUp = () => {
       return;
     }
 
-    createAccount(email, password)
-      .then((result) => {
-        updateUser({ displayName, photoURL }).then(() => {
-          const user = result.user;
-          setUser({ ...user, displayName, photoURL });
+    try {
+      //Upload image to Cloudinary
+      const photoURL = imageFile ? await uploadToCloudinary(
+        imageFile,
+        import.meta.env.VITE_CLOUDINARY_PROFILE_PRESET
+      ) : '';
 
-          const newUser = {
-            displayName,
-            email,
-            photoURL,
-            password,
-          };
+      //Create firebase account
+      const result = await createAccount(email, password);
 
-          fetch(`https://ai-model-inventory-backend.vercel.app/users`, {
-            method: "POST",
-            headers: {
-              "content-type": "application/json",
-            },
-            body: JSON.stringify(newUser),
-          })
-            .then((res) => res.json())
-            .then((afterPost) => {
-              if (afterPost.insertedId) {
-                toast.success("Welcome!", {
-                  position: "top-right",
-                  autoClose: 5000,
-                  hideProgressBar: false,
-                  closeOnClick: false,
-                  pauseOnHover: true,
-                  draggable: true,
-                  progress: undefined,
-                  theme: "light",
-                  transition: Bounce,
-                });
-                navigate(location.state || "/");
-              }
-            });
-        });
-      })
-      .catch((signupError) => {
-        setIsSubmitting(false);
-        toast.error(`${signupError.code}`, {
+      await updateUser({ displayName, photoURL });
+
+      const user = result.user;
+      setUser({ ...user, displayName, photoURL });
+
+      const newUser = {
+        displayName,
+        email,
+        photoURL,
+        password
+      };
+
+      const res = await fetch(
+        `https://ai-model-inventory-backend.vercel.app/users`,
+        {
+          method: "POST",
+          headers: { "content-type": "application/json" },
+          body: JSON.stringify(newUser),
+        }
+      );
+
+      const afterPost = await res.json();
+
+      if (afterPost.insertedId) {
+        toast.success("Welcome!", {
           position: "top-right",
           autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: false,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
           theme: "light",
           transition: Bounce,
         });
-      })
-      .finally(() => {
-        setIsSubmitting(false);
+        navigate(location.state || "/");
+      }
+    } catch (err) {
+      toast.error(`${err.code || err.message}`, {
+        position: "top-right",
+        autoClose: 5000,
+        theme: "light",
+        transition: Bounce,
       });
-    form.reset();
+    } finally {
+      setIsSubmitting(false);
+      form.reset();
+    }
   };
 
-  //sign in with google
   const signInWithGoogle = () => {
+    setIsSubmitting(true);
     googleSignIn()
       .then((result) => {
         const user = result.user;
@@ -119,9 +112,7 @@ const SignUp = () => {
 
         fetch("https://ai-model-inventory-backend.vercel.app/users", {
           method: "POST",
-          headers: {
-            "content-type": "application/json",
-          },
+          headers: { "content-type": "application/json" },
           body: JSON.stringify(newUser),
         })
           .then((res) => res.json())
@@ -130,11 +121,6 @@ const SignUp = () => {
               toast.success("Welcome!", {
                 position: "top-right",
                 autoClose: 5000,
-                hideProgressBar: false,
-                closeOnClick: false,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
                 theme: "light",
                 transition: Bounce,
               });
@@ -145,29 +131,22 @@ const SignUp = () => {
         toast.error(`${error.code}`, {
           position: "top-right",
           autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: false,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
           theme: "light",
           transition: Bounce,
         });
       })
-      .finally(() => {
-        setIsSubmitting(false);
-      });
+      .finally(() => setIsSubmitting(false));
   };
 
-  if(isSubmitting){
-    return <LoaderSpinner></LoaderSpinner>
-  }
+  if (isSubmitting) return <LoaderSpinner />;
 
   return (
     <div className="pt-36 bg-surface pb-10">
       <div className="w-11/12 md:w-3/5 lg:w-1/3 mx-auto mt-10 bg-base p-5 shadow-lg shadow-indigo-500 rounded-md flex flex-col justify-center">
         <div className="text-center my-5">
-          <h1 className="text-2xl font-bold my-3">Register for AI Model Inventory Manager</h1>
+          <h1 className="text-2xl font-bold my-3">
+            Register for AI Model Inventory Manager
+          </h1>
           <p className="text-sm">
             Already have an account?{" "}
             <Link to="/auth/signin" className="text-primary hover:underline">
@@ -176,11 +155,7 @@ const SignUp = () => {
           </p>
         </div>
 
-        {/* sign in form starts here */}
-        <form
-          onSubmit={(e) => handleFormSubmit(e)}
-          className="px-8 py-5 space-y-2"
-        >
+        <form onSubmit={handleFormSubmit} className="px-8 py-5 space-y-2">
           <div className="flex flex-col">
             <label>Name</label>
             <input
@@ -191,6 +166,7 @@ const SignUp = () => {
               required
             />
           </div>
+
           <div className="flex flex-col">
             <label>Email</label>
             <input
@@ -201,15 +177,17 @@ const SignUp = () => {
               required
             />
           </div>
+
           <div className="flex flex-col">
-            <label>Photo URL</label>
+            <label>Profile Image (optional)</label>
             <input
-              type="text"
-              name="photoURL"
-              placeholder="Photo URL"
-              className="input border-input outline-none w-full"
+              type="file"
+              name="avatar"
+              accept="image/*"
+              className="file-input file-input-bordered w-full"
             />
           </div>
+
           <div className="flex flex-col relative">
             <label>Password</label>
             <input
@@ -231,16 +209,20 @@ const SignUp = () => {
               />
             )}
           </div>
+
           <p className="text-red-500 text-sm">{passwordFormatError}</p>
+
           <button
             type="submit"
             className="btn bg-primary w-full text-white rounded-md border-none mt-4 hover:shadow-md hover:shadow-indigo-300"
           >
             Sign Up
           </button>
+
           <p className="text-center my-4">Or</p>
+
           <button
-            onClick={() => signInWithGoogle()}
+            onClick={signInWithGoogle}
             type="button"
             className="btn bg-white w-full text-black rounded-md border-none hover:shadow-md hover:shadow-indigo-300"
           >
@@ -249,14 +231,12 @@ const SignUp = () => {
           </button>
         </form>
       </div>
+
       <ToastContainer
         position="top-right"
         autoClose={5000}
         hideProgressBar={false}
-        newestOnTop={false}
         closeOnClick={false}
-        rtl={false}
-        pauseOnFocusLoss
         draggable
         pauseOnHover
         theme="light"

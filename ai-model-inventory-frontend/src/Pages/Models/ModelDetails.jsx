@@ -15,7 +15,6 @@ import { use } from "react";
 import { AuthContext } from "../Authentication/AuthContext";
 import Swal from "sweetalert2";
 import { useState } from "react";
-// import { useEffect } from "react";
 
 const ModelDetails = () => {
   const { user } = use(AuthContext);
@@ -23,8 +22,9 @@ const ModelDetails = () => {
 
   const model = useLoaderData();
 
-  const [value, setValue] = useState(0);
-  const [hover, setHover] = useState(0);
+  const [value, setValue] = useState(0); //rating value
+  const [hover, setHover] = useState(0); //for star icons for rating model
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const {
     _id,
@@ -35,19 +35,13 @@ const ModelDetails = () => {
     description,
     image,
     createdBy,
+    creator_name,
     createdAt,
     purchased,
     ratingAvg,
   } = model;
 
-  // const currentUserRating =
-  //   JSON.parse(localStorage.getItem("user rating")).modelId === _id
-  //     ? JSON.parse(localStorage.getItem("user rating")).rating
-  //     : "N/A";
-
-  // const [userRating, setUserRating] = useState(currentUserRating);
-
-  // console.log(currentUserRating);
+  const [averageRating, setAverageRating] = useState(ratingAvg);
 
   const [purchasedCount, setPurchasedCount] = useState(purchased);
 
@@ -131,28 +125,20 @@ const ModelDetails = () => {
 
   const model_img = image || modelImg;
 
-  /* useEffect(() => {
-    // console.log(JSON.parse(localStorage.getItem("user rating")));
-    const userRatingObj = {
-      modelId: _id,
-      rating: userRating,
-    };
-    localStorage.setItem("user rating", JSON.stringify(userRatingObj));
-  }, [userRating, _id]); */
-
   //submit user rating
   const submit = () => {
     // console.log("rate : ", value);
+    setIsSubmitting(true);
 
     const newRating = {
       userEmail: user.email,
       ratingValue: value,
     };
 
-    // setUserRating(value);
+    //ai-model-inventory-backend.vercel.app
 
     fetch(
-      `https://ai-model-inventory-backend.vercel.app/modeldetails/ratings/${_id}`,
+      `http://localhost:3000/modeldetails/ratings/${_id}`,
       {
         method: "PATCH",
         headers: {
@@ -169,6 +155,7 @@ const ModelDetails = () => {
             icon: "success",
             theme: "auto",
           });
+          setAverageRating(afterUpdate.ratingAvg); //real time ui update
         }
       })
       .catch(() => {
@@ -177,14 +164,17 @@ const ModelDetails = () => {
           title: "Oops...",
           text: `Something went wrong!`,
         });
-      });
+      })
+      .finally(()=>{
+        setIsSubmitting(false);
+      })
   };
 
   return (
     <div className="bg-secondary pt-28 pb-10">
       <div className="w-10/12 mx-auto">
         <h1 className="text-2xl font-bold">{name}</h1>
-        {/* <span className="text-sm text-muted">Created By : {createdBy}</span> */}
+        <span className="text-sm text-muted">Posted By : {creator_name}</span>
 
         {/* details section */}
         <div className="flex flex-col lg:flex-row gap-6 mt-2">
@@ -259,7 +249,7 @@ const ModelDetails = () => {
                   <IoStarHalfOutline className="text-xl" />
                   <div className="flex flex-col">
                     <span className="text-muted">Average Rating</span>
-                    <span>{ratingAvg}</span>
+                    <span>{averageRating > 0 ? averageRating : 'N/A'}</span>
                   </div>
                 </div>
 
@@ -293,7 +283,7 @@ const ModelDetails = () => {
                 onMouseLeave={() => setHover(0)}
                 onClick={() => setValue(star)}
                 aria-label={`${star} star`}
-                className="cursor-pointer mr-1 text-indigo-700"
+                className="cursor-pointer mr-1 text-info"
               >
                 {(hover || value) >= star ? (
                   <IoIosStar className="text-2xl" />
@@ -304,21 +294,11 @@ const ModelDetails = () => {
             );
           })}
 
-          {/* {JSON.parse(localStorage.getItem("user rating").modelId === _id) ? (
-            <p className="mt-2">
-              <span className="text-accent">
-                {JSON.parse(localStorage.getItem("user rating").rating)}
-              </span>
-            </p>
-          ) : (
-            ""
-          )} */}
-
           <button
             onClick={submit}
             className="bg-primary text-sm cursor-pointer text-white block mt-2 px-3 py-2 rounded-lg hover:shadow-lg hover:shadow-indigo-400!"
           >
-            Submit
+            {isSubmitting ? <i>"Submitting"</i> : 'Submit'}
           </button>
         </div>
       </div>

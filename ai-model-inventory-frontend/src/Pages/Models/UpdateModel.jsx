@@ -4,14 +4,20 @@ import { MdOutlineEdit } from "react-icons/md";
 import { useLoaderData, useNavigate } from "react-router";
 import { use } from "react";
 import { AuthContext } from "../Authentication/AuthContext";
+import { uploadToCloudinary } from "../../utils/photoUploader";
+import { useState } from "react";
 
 const UpdateModel = () => {
-  const {user} = use(AuthContext);
+  const { user } = use(AuthContext);
   const navigate = useNavigate();
 
   const model = useLoaderData();
 
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
   const handleUpdateModel = async (e) => {
+    setIsSubmitting(true);
+
     e.preventDefault();
 
     const form = e.target;
@@ -19,42 +25,57 @@ const UpdateModel = () => {
     const framework = form.framework.value;
     const useCase = form.usecase.value;
     const dataset = form.dataset.value;
-    const image = form.image.value;
+    const imageFile = form.model_img?.files?.[0];
     const description = form.description.value;
 
-    // console.log({name,framework,dataset,usecase, description,image,createdBy,createdAt,purchased});
-    const updatedModel = {
-      name,
-      framework,
-      dataset,
-      useCase,
-      description,
-      image
-    };
+    try {
+      const image = imageFile
+        ? await uploadToCloudinary(
+            imageFile,
+            import.meta.env.VITE_CLOUDINARY_MODEL_PRESET
+          )
+        : model.image;
 
-    const token = await user.getIdToken();
+      const updatedModel = {
+        name,
+        framework,
+        dataset,
+        useCase,
+        description,
+        image,
+      };
 
-    const res = await fetch(`https://ai-model-inventory-backend.vercel.app/update-model/${model._id}`, {
-      method: "PATCH",
-      headers: {
-        "content-type": "application/json",
-        authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify(updatedModel),
-    });
+      const token = await user.getIdToken();
 
-    const afterUpdate = await res.json();
-
-    if (afterUpdate.modifiedCount) {
-          Swal.fire({
-            title: "Model Updated!",
-            icon: "success",
-            theme: "auto",
-          });
-          console.log(afterUpdate);
-          navigate(`/allmodels/${model._id}`);
+      const res = await fetch(
+        `https://ai-model-inventory-backend.vercel.app/update-model/${model._id}`,
+        {
+          method: "PATCH",
+          headers: {
+            "content-type": "application/json",
+            authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify(updatedModel),
         }
-      form.reset();
+      );
+
+      const afterUpdate = await res.json();
+
+      if (afterUpdate.modifiedCount) {
+        Swal.fire({
+          title: "Model Updated!",
+          icon: "success",
+          theme: "auto",
+        });
+        console.log(afterUpdate);
+        navigate(`/allmodels/${model._id}`);
+      }
+    } catch(error) {
+      console.log(error)
+    }
+    finally{
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -167,11 +188,10 @@ const UpdateModel = () => {
           <div className="flex flex-col">
             <label className="fotn-semibold">Image URL</label>
             <input
-              type="text"
-              name="image"
-              className="input border-input focus:outline-primary w-full"
-              defaultValue={model?.image}
-              required
+              type="file"
+              name="model_img"
+              accept="image/*"
+              className="file-input file-input-bordered w-full"
             />
             <span className="text-sm text-muted mt-2">
               Provide a URL to an image representing your model (diagram,
@@ -183,7 +203,7 @@ const UpdateModel = () => {
             type="submit"
             className="btn bg-primary text-white cursor-pointer w-full md:w-auto"
           >
-            Save Changes
+            {isSubmitting ? <i>Saving...</i> : "Save Changes"}
           </button>
         </form>
       </div>

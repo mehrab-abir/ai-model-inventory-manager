@@ -13,6 +13,7 @@ import UpdateModel from "../Pages/Models/UpdateModel";
 import MyModels from "../Pages/Models/MyModels";
 import PurchasedModels from "../Pages/Models/PurchasedModels";
 import PrivateRoute from "./PrivateRoute";
+import Profile from "../Pages/Authentication/Profile";
 
 const router = createBrowserRouter([
   {
@@ -84,6 +85,10 @@ const router = createBrowserRouter([
         Component: SignUp,
       },
     ],
+  },
+  {
+    path : '/myprofile',
+    Component : Profile
   },
   {
     path: "*",

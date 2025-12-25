@@ -16,6 +16,8 @@ const Header = () => {
   const { user, signOutUser } = use(AuthContext);
   const navigate = useNavigate();
 
+  const [thisUser, setThisUser] = useState(null);
+
   const [showDropdown, setShowDropdown] = useState(false);
   const dropdownRef = useRef(null);
 
@@ -30,6 +32,14 @@ const Header = () => {
     html.setAttribute("data-theme", theme);
     localStorage.setItem("theme", theme);
   }, [theme]);
+
+  useEffect(()=>{
+    if(!user?.email) return;
+
+    fetch(`http://localhost:3000/getuser?email=${user?.email}`)
+    .then(res=>res.json())
+    .then(data=>setThisUser(data));
+  },[user?.email])
 
   //sign out user
   const handleSignOut = () => {
@@ -52,8 +62,22 @@ const Header = () => {
     };
   },[])
 
-  const userPicture =
-    user?.photoURL || user?.providerData[0]?.photoURL || userAvatar;
+  const getAvatarUrl = (url) => {
+    if (!url) return userAvatar;
+
+    if (url.includes("res.cloudinary.com")) {
+      return url.replace("/upload/", "/upload/w_96,h_96,c_fill,g_face/");
+    }
+
+    return url;
+  };
+
+  /* const userPicture = getAvatarUrl(
+    user?.photoURL || user?.providerData[0]?.photoURL
+  ); */
+  const userPicture = getAvatarUrl(
+    thisUser?.photoURL
+  ); 
 
   return (
     <header className="bg-surface fixed w-full z-50 shadow-xl">
@@ -115,7 +139,7 @@ const Header = () => {
               >
                 <img
                   src={userPicture}
-                  className="w-12 rounded-full"
+                  className="w-12 h-12 object-cover rounded-full"
                   alt="user"
                 />
                 <IoIosArrowDropdown className="text-2xl" />
@@ -136,6 +160,9 @@ const Header = () => {
                 </Link>
                 <Link to="/purchased-models" className="hover:underline">
                   My Purchase
+                </Link>
+                <Link to="/myprofile" className="hover:underline">
+                  My Profile
                 </Link>
                 <button
                   onClick={() => handleSignOut()}
