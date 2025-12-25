@@ -88,7 +88,9 @@ const router = createBrowserRouter([
   },
   {
     path : '/myprofile',
-    Component : Profile
+    element : <PrivateRoute>
+      <Profile></Profile>
+    </PrivateRoute>
   },
   {
     path: "*",
