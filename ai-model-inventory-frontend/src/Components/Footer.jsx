@@ -31,12 +31,15 @@ const Footer = () => {
           <div className="flex-1 mt-10 md:mt-0">
             <h4 className="text-lg font-semibold">Connect</h4>
             <div className="flex items-center mt-5 gap-8">
-              <Link to="https://github.com/mehrab-abir/ai-model-inventory-manager" target='_blank'>
+              <Link to="https://github.com/mehrab-abir" target="_blank">
                 <FaGithub className="text-2xl" />
               </Link>
               <FaInstagramSquare className="text-2xl cursor-pointer" />
               <FaXTwitter className="text-2xl cursor-pointer" />
-              <BsLinkedin className="text-2xl cursor-pointer" />
+              <Link to="https://www.linkedin.com/in/mehrababir/"
+                target='_blank'><BsLinkedin
+                 className="text-2xl cursor-pointer"
+              /></Link>
             </div>
           </div>
         </div>

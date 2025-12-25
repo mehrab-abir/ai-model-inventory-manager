@@ -27,7 +27,7 @@ const ModelCard = ({model}) => {
           )}...`}</p>
 
           <div className="flex items-center justify-between mt-2">
-            <span className="text-sm bg-indigo-200 text-primary px-2 rounded-full">{ratingAvg > 0 ? ratingAvg : 'N/A'}</span>
+            <span className="text-sm bg-indigo-200 text-primary px-2 rounded-full">Rating: {ratingAvg > 0 ? ratingAvg.toFixed(2) : 'N/A'}</span>
             <span className="bg-secondary p-1 rounded-full text-sm!">
               {useCase}
             </span>

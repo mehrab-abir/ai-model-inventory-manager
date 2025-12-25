@@ -249,7 +249,7 @@ const ModelDetails = () => {
                   <IoStarHalfOutline className="text-xl" />
                   <div className="flex flex-col">
                     <span className="text-muted">Average Rating</span>
-                    <span>{averageRating > 0 ? averageRating : 'N/A'}</span>
+                    <span>{averageRating > 0 ? averageRating.toFixed(2) : 'N/A'}</span>
                   </div>
                 </div>
 
