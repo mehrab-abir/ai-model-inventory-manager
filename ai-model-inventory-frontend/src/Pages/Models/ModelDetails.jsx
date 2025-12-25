@@ -138,7 +138,7 @@ const ModelDetails = () => {
     //ai-model-inventory-backend.vercel.app
 
     fetch(
-      `http://localhost:3000/modeldetails/ratings/${_id}`,
+      `https://ai-model-inventory-backend.vercel.app/modeldetails/ratings/${_id}`,
       {
         method: "PATCH",
         headers: {

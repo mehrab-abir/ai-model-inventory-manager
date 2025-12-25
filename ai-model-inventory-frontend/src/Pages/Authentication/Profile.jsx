@@ -24,7 +24,7 @@ const Profile = () => {
   useEffect(() => {
     if (!user?.email) return;
 
-    fetch(`http://localhost:3000/getuser?email=${user?.email}`)
+    fetch(`https://ai-model-inventory-backend.vercel.app/getuser?email=${user?.email}`)
       .then((res) => res.json())
       .then((data) => setThisUser(data));
   }, [user?.email]);
