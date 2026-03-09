@@ -83,6 +83,11 @@ const ModelDetails = () => {
   };
 
   const handlePurchase = () => {
+    if(!user){
+      navigate("/auth/signin",{replace:true});
+      return;
+    }
+    
     const purchasedModel = { purchasedModelId: _id, purchasedBy: user.email };
 
     fetch("https://ai-model-inventory-backend.vercel.app/purchase-models", {
@@ -127,6 +132,10 @@ const ModelDetails = () => {
 
   //submit user rating
   const submit = () => {
+    if(!user){
+      navigate("/auth/signin", {replace:true});
+      return;
+    }
     // console.log("rate : ", value);
     setIsSubmitting(true);
 

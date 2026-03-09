@@ -166,7 +166,7 @@ const Profile = () => {
       {/* update profile modal  */}
       <dialog id="update_profile_modal" ref={modalRef} className="modal">
         <div className="modal-box bg-surface">
-          <h3 className="font-bold text-lg mb-2">Update name and photo URL</h3>
+          <h3 className="font-bold text-lg mb-2">Update name and photo</h3>
           <form onSubmit={(e) => handleUpdateProfile(e)}>
             <div className="flex flex-col">
               <label>Name</label>
@@ -180,7 +180,7 @@ const Profile = () => {
             </div>
 
             <div className="flex flex-col mt-2">
-              <label>Photo URL</label>
+              <label>Photo</label>
               <input
                 type="file"
                 name="avatar"

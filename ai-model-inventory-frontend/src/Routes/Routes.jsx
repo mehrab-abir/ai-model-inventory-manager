@@ -32,40 +32,46 @@ const router = createBrowserRouter([
       },
       {
         path: "allmodels/:id",
-        element : <PrivateRoute>
-          <ModelDetails></ModelDetails>
-        </PrivateRoute>,
+        Component: ModelDetails,
         loader: ({ params }) =>
           fetch(`https://ai-model-inventory-backend.vercel.app/allmodels/${params.id}`),
         hydrateFallbackElement: <LoaderSpinner></LoaderSpinner>,
       },
       {
         path: "addmodel",
-        element: <PrivateRoute>
-          <AddModel></AddModel>
-        </PrivateRoute>,
+        element: (
+          <PrivateRoute>
+            <AddModel></AddModel>
+          </PrivateRoute>
+        ),
       },
       {
         path: "/update-this-model/:id",
-        element : <PrivateRoute>
-          <UpdateModel></UpdateModel>
-        </PrivateRoute>,
+        element: (
+          <PrivateRoute>
+            <UpdateModel></UpdateModel>
+          </PrivateRoute>
+        ),
         loader: ({ params }) =>
           fetch(`https://ai-model-inventory-backend.vercel.app/update-this-model/${params.id}`),
         hydrateFallbackElement: <LoaderSpinner></LoaderSpinner>,
       },
       {
         path: "/mymodels",
-        element : <PrivateRoute>
-          <MyModels></MyModels>
-        </PrivateRoute>
+        element: (
+          <PrivateRoute>
+            <MyModels></MyModels>
+          </PrivateRoute>
+        ),
       },
       {
-        path : '/purchased-models',
-        element : <PrivateRoute>
-          <PurchasedModels></PurchasedModels>
-        </PrivateRoute>
-      }
+        path: "/purchased-models",
+        element: (
+          <PrivateRoute>
+            <PurchasedModels></PurchasedModels>
+          </PrivateRoute>
+        ),
+      },
     ],
   },
   {
@@ -87,10 +93,12 @@ const router = createBrowserRouter([
     ],
   },
   {
-    path : '/myprofile',
-    element : <PrivateRoute>
-      <Profile></Profile>
-    </PrivateRoute>
+    path: "/myprofile",
+    element: (
+      <PrivateRoute>
+        <Profile></Profile>
+      </PrivateRoute>
+    ),
   },
   {
     path: "*",
